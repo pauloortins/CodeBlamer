@@ -1,0 +1,9 @@
+C:\Users\paulo_000\Documents\Visual Studio 2012\Projects\CodeBlamer\CodeBlamer.MetricCalculator\bin\Debug\CodeBlamer.MetricCalculator.exe.config
+C:\Users\paulo_000\Documents\Visual Studio 2012\Projects\CodeBlamer\CodeBlamer.MetricCalculator\bin\Debug\CodeBlamer.MetricCalculator.exe
+C:\Users\paulo_000\Documents\Visual Studio 2012\Projects\CodeBlamer\CodeBlamer.MetricCalculator\bin\Debug\CodeBlamer.MetricCalculator.pdb
+C:\Users\paulo_000\Documents\Visual Studio 2012\Projects\CodeBlamer\CodeBlamer.MetricCalculator\obj\Debug\CodeBlamer.MetricCalculator.csprojResolveAssemblyReference.cache
+C:\Users\paulo_000\Documents\Visual Studio 2012\Projects\CodeBlamer\CodeBlamer.MetricCalculator\obj\Debug\CodeBlamer.MetricCalculator.exe
+C:\Users\paulo_000\Documents\Visual Studio 2012\Projects\CodeBlamer\CodeBlamer.MetricCalculator\obj\Debug\CodeBlamer.MetricCalculator.pdb
+E:\Testando\CodeBlamer.MetricCalculator.exe.config
+E:\Testando\CodeBlamer.MetricCalculator.exe
+E:\Testando\CodeBlamer.MetricCalculator.pdb

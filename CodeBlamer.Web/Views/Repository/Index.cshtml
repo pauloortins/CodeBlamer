@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm("AddRepository", "Repository", FormMethod.Post))
+{
+    <fieldset>
+        Select a repository <input type="text" name="repositoryUrl" />
+        <input type="submit" value="Add" />
+    </fieldset>
+    <div>
+        @ViewBag.CloneMessage
+    </div>
+    <div>
+        @ViewBag.CloneCommits
+    </div>
+}
