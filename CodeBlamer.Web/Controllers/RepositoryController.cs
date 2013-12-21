@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using LibGit2Sharp;
+using CodeBlamer.Infra;
 
 namespace CodeBlamer.Web.Controllers
 {
@@ -21,7 +22,7 @@ namespace CodeBlamer.Web.Controllers
 
         public ActionResult AddRepository(string repositoryUrl)
         {
-            new RepositoryRetriever.RepositoryRetriever().AddRepository(repositoryUrl);
+            new MongoRepository().InsertUrl(repositoryUrl);
             return View("Index");
         }
     }

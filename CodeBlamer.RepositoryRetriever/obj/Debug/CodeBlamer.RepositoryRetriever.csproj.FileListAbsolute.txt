@@ -11,3 +11,14 @@ C:\Users\paulo_000\Documents\Visual Studio 2012\Projects\CodeBlamer\CodeBlamer.R
 C:\Users\paulo_000\Documents\Visual Studio 2012\Projects\CodeBlamer\CodeBlamer.RepositoryRetriever\bin\Debug\MongoDB.Driver.xml
 E:\Testando\CodeBlamer.RepositoryRetriever.dll
 E:\Testando\CodeBlamer.RepositoryRetriever.pdb
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\bin\Debug\CodeBlamer.RepositoryRetriever.dll
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\bin\Debug\CodeBlamer.RepositoryRetriever.pdb
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\bin\Debug\LibGit2Sharp.dll
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\bin\Debug\MongoDB.Bson.dll
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\bin\Debug\MongoDB.Driver.dll
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\bin\Debug\LibGit2Sharp.xml
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\bin\Debug\MongoDB.Bson.xml
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\bin\Debug\MongoDB.Driver.xml
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\obj\Debug\CodeBlamer.RepositoryRetriever.csprojResolveAssemblyReference.cache
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\obj\Debug\CodeBlamer.RepositoryRetriever.dll
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\obj\Debug\CodeBlamer.RepositoryRetriever.pdb

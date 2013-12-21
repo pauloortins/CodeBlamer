@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LibGit2Sharp;
-using MongoDB.Driver;
-using MongoDB.Driver.Builders;
 
-namespace CodeBlamer.RepositoryRetriever
+namespace CodeBlamer.Infra
 {
     public class RepositoryRetriever
     {
@@ -30,7 +25,7 @@ namespace CodeBlamer.RepositoryRetriever
             return repository.Commits;
         }
 
-        private string GetFolderPath(string repositoryUrl)
+        public string GetFolderPath(string repositoryUrl)
         {
             return "E:/CodeBlamer/Repositories/" + repositoryUrl.Replace("https://github.com/", string.Empty);
         }
@@ -49,12 +44,6 @@ namespace CodeBlamer.RepositoryRetriever
 
         private void InsertCommits(string repositoryUrl, IQueryableCommitLog commits)
         {
-            var connectionString = "mongodb://localhost";
-            var client = new MongoClient(connectionString);
-            var server = client.GetServer();
-            var database = server.GetDatabase("codeblamerdb");
-            var collection = database.GetCollection<Project>("projects");
-
             var project = new Project()
                 {
                     ReposiroryUrl = repositoryUrl,
@@ -65,7 +54,64 @@ namespace CodeBlamer.RepositoryRetriever
             project.Commits =
                 commits.Select(x => new Commits {Author = x.Author.Name, Date = x.Author.When.UtcDateTime, SHA = x.Sha}).ToList();
 
-            collection.Insert(project);
+            new MongoRepository().InsertProject(project);
+        }
+
+        public string GetCommitFolder(string repositoryUrl, string commit)
+        {
+            return GetFolderPath(repositoryUrl).Replace("Repositories", "Versions") + "/" + commit;
+        }
+
+        public void GenerateSpecificVersion(string repositoryUrl, string commit)
+        {
+            var repositoryFolder = GetFolderPath(repositoryUrl);
+            var repository = new Repository(repositoryFolder + "/.git");
+            repository.Checkout(commit);
+
+            var commitFolder = GetCommitFolder(repositoryUrl, commit);
+            Directory.CreateDirectory(commitFolder);
+
+            DirectoryCopy(repositoryFolder, commitFolder, true);
+
+            repository.Checkout(repository.Branches["master"]);
+        }
+
+        private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        {
+            // Get the subdirectories for the specified directory.
+            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            if (!dir.Exists)
+            {
+                throw new DirectoryNotFoundException(
+                    "Source directory does not exist or could not be found: "
+                    + sourceDirName);
+            }
+
+            // If the destination directory doesn't exist, create it. 
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // Get the files in the directory and copy them to the new location.
+            FileInfo[] files = dir.GetFiles();
+            foreach (FileInfo file in files)
+            {
+                string temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
+
+            // If copying subdirectories, copy them and their contents to new location. 
+            if (copySubDirs)
+            {
+                foreach (DirectoryInfo subdir in dirs)
+                {
+                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                }
+            }
         }
     }
 }

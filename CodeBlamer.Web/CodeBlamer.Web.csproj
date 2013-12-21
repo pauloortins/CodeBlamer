@@ -142,9 +142,9 @@
     <Content Include="Views\Repository\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeBlamer.RepositoryRetriever\CodeBlamer.RepositoryRetriever.csproj">
+    <ProjectReference Include="..\CodeBlamer.RepositoryRetriever\CodeBlamer.Infra.csproj">
       <Project>{1CD4B3B9-0B97-43E8-9E76-2667522E8192}</Project>
-      <Name>CodeBlamer.RepositoryRetriever</Name>
+      <Name>CodeBlamer.Infra</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

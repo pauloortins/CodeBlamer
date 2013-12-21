@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeBlamer.Web", "CodeBlamer.Web\CodeBlamer.Web.csproj", "{BD939F8D-8437-4403-AD4D-C5224EC78B82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeBlamer.RepositoryRetriever", "CodeBlamer.RepositoryRetriever\CodeBlamer.RepositoryRetriever.csproj", "{1CD4B3B9-0B97-43E8-9E76-2667522E8192}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeBlamer.Infra", "CodeBlamer.RepositoryRetriever\CodeBlamer.Infra.csproj", "{1CD4B3B9-0B97-43E8-9E76-2667522E8192}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeBlamer.MetricCalculator", "CodeBlamer.MetricCalculator\CodeBlamer.MetricCalculator.csproj", "{1AFE4B14-2069-4ED1-8E75-FE6EE04E972F}"
 EndProject

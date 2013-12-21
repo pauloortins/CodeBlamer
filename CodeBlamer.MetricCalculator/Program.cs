@@ -1,154 +1,81 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
+using CodeBlamer.Infra;
 
 namespace CodeBlamer.MetricCalculator
 {
     class Program
     {
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            var codeBlamerSolution = new Solution("C:\\Users\\paulo_000\\Documents\\Visual Studio 2012\\Projects\\CodeBlamer\\", "E:\\Testando");
-            var codeBlamerPath = codeBlamerSolution.SolutionPath;
-            var codeBlamerProjects = codeBlamerSolution.Projects;
-            codeBlamerSolution.Build();
-            codeBlamerSolution.CalculateMetrics();
-        }
-    }
-
-    class Solution
-    {
-        public string SolutionPath { get; set; }
-        public List<string> Projects { get; set; }
-        private readonly string _outputFolder;
-        private readonly string _solutionFolder;
-
-        public Solution(string solutionFolder, string outputFolder)
-        {
-            var solutionFiles = SearchInFolder(new DirectoryInfo(solutionFolder));
-            SolutionPath = solutionFiles[0].FullName;
-            Projects = GetProjects();
-            _outputFolder = outputFolder;
-            _solutionFolder = solutionFolder;
+            Run();
         }
 
-        private List<string> GetProjects()
+        private static void Run()
         {
-            var content = File.ReadAllText(SolutionPath);
-            Regex projReg = new Regex("Project\\(\"\\{[\\w-]*\\}\"\\) = \"([\\w _]*.*)\", \"(.*\\.(cs|vcx|vb)proj)\"" , RegexOptions.Compiled);
-            var matches = projReg.Matches(content).Cast<Match>();
-            var projects = matches.Select(x => x.Groups[1].Value).ToList();
-            return projects;
-        }
+            var mongo = new MongoRepository();
+            var repository = new RepositoryRetriever();
 
-        private List<FileInfo> SearchInFolder(DirectoryInfo directoryInfo)
-        {
-            var solutionFiles = directoryInfo.GetFiles("*.sln").ToList();
-            var subDirs = directoryInfo.GetDirectories();
-
-            foreach (var subDir in subDirs)
+            while (true)
             {
-                solutionFiles.AddRange(SearchInFolder(subDir));
-            }
+                var repositoryUrl = mongo.GetUrl();
 
-            return solutionFiles;
+                if (repositoryUrl == null)
+                {
+                    WriteToConsole("Url not found");
+                    Thread.Sleep(1000);
+                    continue;
+                }
+
+                WriteToConsole(string.Format("{0} found", repositoryUrl.Url));
+
+                WriteToConsole("Cloning Repository");
+                repository.AddRepository(repositoryUrl.Url);
+
+                WriteToConsole("Generating Versions");
+                GenerateAllVersions(repositoryUrl.Url);
+
+                WriteToConsole("Calculating Metrics");
+                CalculateMetrics(repositoryUrl.Url);                
+
+                mongo.DeleteUrl(repositoryUrl);
+            }
         }
 
-        public void Build()
+        private static void CalculateMetrics(string repositoryUrl)
         {
-            //strCommandParameters are parameters to pass to program
-            var parameters = "\"{0}\" /t:build /m:4 /nr:true /p:OutputPath={1} /nologo";
+            var mongo = new MongoRepository();
+            var repository = new RepositoryRetriever();
+            var projects = mongo.GetProjects().First(x => x.ReposiroryUrl.Equals(repositoryUrl));
 
-            RunExternalExe("C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\MSBuild.exe",
-                           string.Format(parameters, SolutionPath, _outputFolder));
-            
+            projects.Commits.ForEach(x =>
+                {
+                    var solutionFolder = repository.GetFolderPath(repositoryUrl);
+                    var solution = new Solution(solutionFolder, x.SHA);
+                    solution.Build();
+                    solution.CalculateMetrics();
+                });
         }
 
-        public void CalculateMetrics()
+        private static void WriteToConsole(string msg)
         {
-            Projects.ForEach(CalculateMetricsForProject);
+            Console.WriteLine("{0} - {1}", DateTime.Now, msg);
         }
 
-        private void CalculateMetricsForProject(string projectName)
+        private static void GenerateAllVersions(string repositoryUrl)
         {
-            var parameters = "/file:\"{0}\" /out:\"{1}\"";
-            var metricsOutputFolder = _solutionFolder.Replace("Projects", "Results") + "\\" + projectName;
+            var mongo = new MongoRepository();
+            var projects = mongo.GetProjects().First(x => x.ReposiroryUrl.Equals(repositoryUrl));
 
-            Directory.CreateDirectory(metricsOutputFolder);
-
-            var metricsOutputPath = metricsOutputFolder + "\\result.xml";
-
-            var file = new DirectoryInfo(_outputFolder).GetFiles(projectName + ".*")[0];
-
-            var dllPath = file.FullName;
-
-            RunExternalExe("C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\Team Tools\\Static Analysis Tools\\FxCop\\Metrics.exe",
-                string.Format(parameters, dllPath, metricsOutputPath));
+            projects.Commits.ForEach(x => GenerateVersion(repositoryUrl, x.SHA));
         }
 
-        public string RunExternalExe(string filename, string arguments = null)
+        private static void GenerateVersion(string repositoryUrl, string commit)
         {
-            var process = new Process();
-
-            process.StartInfo.FileName = filename;
-            if (!string.IsNullOrEmpty(arguments))
-            {
-                process.StartInfo.Arguments = arguments;
-            }
-
-            process.StartInfo.CreateNoWindow = true;
-            process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            process.StartInfo.UseShellExecute = false;
-
-            process.StartInfo.RedirectStandardError = true;
-            process.StartInfo.RedirectStandardOutput = true;
-            var stdOutput = new StringBuilder();
-            process.OutputDataReceived += (sender, args) => stdOutput.Append(args.Data);
-
-            string stdError = null;
-            try
-            {
-                process.Start();
-                process.BeginOutputReadLine();
-                stdError = process.StandardError.ReadToEnd();
-                process.WaitForExit();
-            }
-            catch (Exception e)
-            {
-                throw new Exception("OS error while executing " + Format(filename, arguments) + ": " + e.Message, e);
-            }
-
-            if (process.ExitCode == 0)
-            {
-                return stdOutput.ToString();
-            }
-            
-            var message = new StringBuilder();
-
-            if (!string.IsNullOrEmpty(stdError))
-            {
-                message.AppendLine(stdError);
-            }
-
-            if (stdOutput.Length != 0)
-            {
-                message.AppendLine("Std output:");
-                message.AppendLine(stdOutput.ToString());
-            }
-
-            throw new Exception(Format(filename, arguments) + " finished with exit code = " + process.ExitCode + ": " + message);
-        }
-
-        private string Format(string filename, string arguments)
-        {
-            return "'" + filename +
-                ((string.IsNullOrEmpty(arguments)) ? string.Empty : " " + arguments) +
-                "'";
+            var repository = new Infra.RepositoryRetriever();
+            repository.GenerateSpecificVersion(repositoryUrl,commit);
         }
     }
 }
