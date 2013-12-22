@@ -54,7 +54,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeBlamer.RepositoryRetriever\CodeBlamer.Infra.csproj">
+    <ProjectReference Include="..\CodeBlamer.Infra\CodeBlamer.Infra.csproj">
       <Project>{1cd4b3b9-0b97-43e8-9e76-2667522e8192}</Project>
       <Name>CodeBlamer.Infra</Name>
     </ProjectReference>
