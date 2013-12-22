@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using CodeBlamer.Infra.Models;
 using LibGit2Sharp;
 
 namespace CodeBlamer.Infra
@@ -41,7 +42,7 @@ namespace CodeBlamer.Infra
         {
             var project = new Project()
                 {
-                    ReposiroryUrl = repositoryUrl,
+                    RepositoryUrl = repositoryUrl,
                     RepositoryAuthor = GetRepositoryAuthor(repositoryUrl),
                     RepositoryName = GetRepositoryName(repositoryUrl)
                 };

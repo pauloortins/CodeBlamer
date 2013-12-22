@@ -26,5 +26,10 @@ namespace CodeBlamer.Infra
         {
             return GetRepositoryPath().Replace("Repositories", "Results") + "/" + commit + "/" + projectName;
         }
+
+        public string GetResultXmlPath(string commit, string projectName)
+        {
+            return GetResultPath(commit, projectName) + "/result.xml";
+        }
      }
 }

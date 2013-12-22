@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CodeBlamer.Infra.Models;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 
@@ -51,6 +52,17 @@ namespace CodeBlamer.Infra
             var database = GetDatabase();
             var collection = database.GetCollection<RepositoryUrl>("urls");
             collection.Remove(Query.EQ("_id", url.Id));
+        }
+
+        public void SaveMetrics(RepositoryUrl repositoryUrl, string commit, List<Module> modules)
+        {
+            var projects = GetDatabase().GetCollection<Project>("projects");
+
+            var project = projects.FindOne(Query.EQ("RepositoryUrl", repositoryUrl.Url));
+            var commitProject = project.Commits.First(x => x.SHA == commit);
+            commitProject.Modules = modules;
+
+            projects.Save(project);
         }
     }
 }

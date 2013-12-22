@@ -70,3 +70,8 @@ C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.Web\bin\MongoDB.Bson.x
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.Web\obj\Debug\CodeBlamer.Web.csprojResolveAssemblyReference.cache
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.Web\obj\Debug\CodeBlamer.Web.dll
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.Web\obj\Debug\CodeBlamer.Web.pdb
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.Web\bin\Antlr3.Runtime.dll
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.Web\bin\System.Web.Optimization.dll
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.Web\bin\WebGrease.dll
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.Web\bin\Antlr3.Runtime.pdb
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.Web\bin\System.Web.Optimization.xml

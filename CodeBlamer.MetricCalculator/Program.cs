@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using CodeBlamer.Infra;
+using CodeBlamer.Infra.Models;
 
 namespace CodeBlamer.MetricCalculator
 {
@@ -47,13 +49,22 @@ namespace CodeBlamer.MetricCalculator
         private static void CalculateMetrics(RepositoryUrl repositoryUrl)
         {
             var mongo = new MongoRepository();
-            var projects = mongo.GetProjects().First(x => x.ReposiroryUrl.Equals(repositoryUrl.Url));
+            var projects = mongo.GetProjects().First(x => x.RepositoryUrl.Equals(repositoryUrl.Url));
 
             projects.Commits.ForEach(x =>
                 {
-                    var solution = new Solution(repositoryUrl, x.SHA);
-                    solution.Build();
-                    solution.CalculateMetrics();
+                    try
+                    {
+                        var solution = new Solution(repositoryUrl, x.SHA);
+                        solution.Build();
+                        solution.CalculateMetrics();
+                        solution.SaveMetrics();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                    
                 });
         }
 
@@ -65,7 +76,7 @@ namespace CodeBlamer.MetricCalculator
         private static void GenerateAllVersions(RepositoryUrl repositoryUrl)
         {
             var mongo = new MongoRepository();
-            var projects = mongo.GetProjects().First(x => x.ReposiroryUrl.Equals(repositoryUrl.Url));
+            var projects = mongo.GetProjects().First(x => x.RepositoryUrl.Equals(repositoryUrl.Url));
 
             projects.Commits.ForEach(x => GenerateVersion(repositoryUrl, x.SHA));
         }

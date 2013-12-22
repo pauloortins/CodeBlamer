@@ -5,8 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using CodeBlamer.Infra;
 using CodeBlamer.Infra.Extensions;
+using CodeBlamer.Infra.Models;
 
 namespace CodeBlamer.MetricCalculator
 {
@@ -42,6 +44,11 @@ namespace CodeBlamer.MetricCalculator
             return _repositoryUrl.GetResultPath(_commit, projectName);
         }
 
+        public string GetResultXmlPath(string projectName)
+        {
+            return _repositoryUrl.GetResultXmlPath(_commit, projectName);
+        }
+
         private List<string> GetProjects()
         {
             var content = File.ReadAllText(SolutionPath);
@@ -71,7 +78,7 @@ namespace CodeBlamer.MetricCalculator
 
             metricsOutputFolder.CreateDirectory();
 
-            var metricsOutputPath = metricsOutputFolder + "\\result.xml";
+            var metricsOutputPath = GetResultXmlPath(projectName);
 
             var file = GetBuildPath().SearchForInSurface(projectName + ".*")[0];
 
@@ -80,6 +87,22 @@ namespace CodeBlamer.MetricCalculator
             "C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\Team Tools\\Static Analysis Tools\\FxCop\\Metrics.exe".Run(
                            string.Format(parameters, dllPath, metricsOutputPath));
         }
+
+        public void SaveMetrics()
+        {
+            var modules = this.Projects.Select(GetMetricsForProject).ToList();
+            var mongo = new MongoRepository();
+            mongo.SaveMetrics(_repositoryUrl, _commit, modules);
+        }
         
+        private Module GetMetricsForProject(string projectName)
+        {
+            var document =
+                XDocument.Load(GetResultXmlPath(projectName));
+
+            var moduleXml = document.Root.Elements().Descendants().First(x => x.Name == "Module");
+
+            return new Module(moduleXml);
+        }
     }
 }

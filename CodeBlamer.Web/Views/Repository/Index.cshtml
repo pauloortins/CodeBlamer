@@ -1,19 +1,101 @@
-﻿@{
+﻿@using System.Web.Optimization
+@{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
+<head>
+    @Styles.Render("~/css/aciTree")
+</head>
 
 @using (Html.BeginForm("AddRepository", "Repository", FormMethod.Post))
 {
     <fieldset>
-        Select a repository <input type="text" name="repositoryUrl" />
+        Select a repository
+        <input type="text" name="repositoryUrl" />
         <input type="submit" value="Add" />
     </fieldset>
-    <div>
-        @ViewBag.CloneMessage
+   
+    <div id="tree" class="aciTree">
+        <div>
+            <a style="font-size: 10px" href="/source/php/niceJson.php?file=source/aciTree/json/sample.json" title="See the JSON data" target="_blank">see the JSON behind this tree</a>
+            <br>
+            Sample tree
+        </div>
     </div>
-    <div>
-        @ViewBag.CloneCommits
-    </div>
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
 }
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/aciTree")
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load("visualization", "1", { packages: ["corechart"] });
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+        
+    }
+</script>
+
+
+<script class="code" type="text/javascript">
+
+    $(function () {
+
+        $('#tree').on('acitree', function (event, api, item, eventName, options) {
+            if (eventName == 'selected') {
+                var itemData = api.itemData(item);
+                var node = itemData['node'];
+
+                $.get('@Url.Action("GetNodeMetrics")', { repositoryUrl: "John", node: node})
+                  .done(function (data) {
+                      var chartOptions = {
+                          title: 'Company Performance',
+                          curveType: 'function',
+                          legend: { position: 'bottom' },
+                          pointSize: 3
+                      };
+
+                      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                      chart.draw(convertToChart(data, "MaintainabilityIndex"), chartOptions);
+                  });
+            }
+        });
+
+        // init the tree
+        $('#tree').aciTree({
+            ajax: {
+                url: '@Url.Action("GetProjectTree")'
+            },
+            selectable: true
+        });
+
+    });    
+
+    function convertToChart(metricsData, metric) {
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Commits');
+        data.addColumn('number', 'MaintainabilityIndex');
+        data.addColumn('number', 'CyclomaticComplexity');
+        data.addColumn('number', 'ClassCoupling');
+        data.addColumn('number', 'DepthOfInheritance');
+        data.addColumn('number', 'LinesOfCode');
+        
+        data.addRows(metricsData.length);
+
+        for (var i = 0; i < metricsData.length; i++) {
+            data.setCell(i, 0, parseJsonDate(metricsData[i].Date));
+            data.setCell(i, 1, metricsData[i].Metrics["MaintainabilityIndex"]);
+            data.setCell(i, 2, metricsData[i].Metrics["CyclomaticComplexity"]);
+            data.setCell(i, 3, metricsData[i].Metrics["ClassCoupling"]);
+            data.setCell(i, 4, metricsData[i].Metrics["DepthOfInheritance"]);
+            data.setCell(i, 5, metricsData[i].Metrics["LinesOfCode"]);
+        }
+
+        return data;
+    }
+    
+    function parseJsonDate(jsonDateString) {
+        return new Date(parseInt(jsonDateString.replace('/Date(', '')));
+    }
+</script>
