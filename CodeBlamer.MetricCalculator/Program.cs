@@ -52,7 +52,7 @@ namespace CodeBlamer.MetricCalculator
 
             projects.Commits.ForEach(x =>
                 {
-                    var solutionFolder = repository.GetFolderPath(repositoryUrl);
+                    var solutionFolder = repository.GetCommitFolder(repositoryUrl, x.SHA);
                     var solution = new Solution(solutionFolder, x.SHA);
                     solution.Build();
                     solution.CalculateMetrics();

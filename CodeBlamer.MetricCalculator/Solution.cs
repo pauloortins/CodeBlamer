@@ -22,7 +22,7 @@ namespace CodeBlamer.MetricCalculator
             SolutionPath = solutionFiles[0].FullName;
             Projects = GetProjects();
             _solutionFolder = solutionFolder;
-            _outputFolder = solutionFolder.Replace("Repositories","Builds");
+            _outputFolder = solutionFolder.Replace("Versions","Builds");
             _commit = commit;
         }
 
@@ -66,7 +66,7 @@ namespace CodeBlamer.MetricCalculator
         private void CalculateMetricsForProject(string projectName)
         {
             var parameters = "/file:\"{0}\" /out:\"{1}\"";
-            var metricsOutputFolder = _solutionFolder.Replace("Projects", "Results") + "\\" + projectName + "\\" + _commit;
+            var metricsOutputFolder = _solutionFolder.Replace("Versions", "Results") + "\\" + projectName;
 
             Directory.CreateDirectory(metricsOutputFolder);
 

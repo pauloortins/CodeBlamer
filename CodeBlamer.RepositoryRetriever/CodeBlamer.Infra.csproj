@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Commits.cs" />
     <Compile Include="MongoRepository.cs" />
+    <Compile Include="Paths.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="RepositoryRetriever.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

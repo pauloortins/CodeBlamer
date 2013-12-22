@@ -8,3 +8,4 @@ C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\bi
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\bin\Debug\MongoDB.Driver.xml
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\obj\Debug\CodeBlamer.Infra.dll
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\obj\Debug\CodeBlamer.Infra.pdb
+C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.RepositoryRetriever\obj\Debug\CodeBlamer.Infra.csprojResolveAssemblyReference.cache
