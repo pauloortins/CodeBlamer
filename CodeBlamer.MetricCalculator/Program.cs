@@ -32,28 +32,26 @@ namespace CodeBlamer.MetricCalculator
                 WriteToConsole(string.Format("{0} found", repositoryUrl.Url));
 
                 WriteToConsole("Cloning Repository");
-                repository.AddRepository(repositoryUrl.Url);
+                repository.AddRepository(repositoryUrl);
 
                 WriteToConsole("Generating Versions");
-                GenerateAllVersions(repositoryUrl.Url);
+                GenerateAllVersions(repositoryUrl);
 
                 WriteToConsole("Calculating Metrics");
-                CalculateMetrics(repositoryUrl.Url);                
+                CalculateMetrics(repositoryUrl);                
 
                 mongo.DeleteUrl(repositoryUrl);
             }
         }
 
-        private static void CalculateMetrics(string repositoryUrl)
+        private static void CalculateMetrics(RepositoryUrl repositoryUrl)
         {
             var mongo = new MongoRepository();
-            var repository = new RepositoryRetriever();
-            var projects = mongo.GetProjects().First(x => x.ReposiroryUrl.Equals(repositoryUrl));
+            var projects = mongo.GetProjects().First(x => x.ReposiroryUrl.Equals(repositoryUrl.Url));
 
             projects.Commits.ForEach(x =>
                 {
-                    var solutionFolder = repository.GetCommitFolder(repositoryUrl, x.SHA);
-                    var solution = new Solution(solutionFolder, x.SHA);
+                    var solution = new Solution(repositoryUrl, x.SHA);
                     solution.Build();
                     solution.CalculateMetrics();
                 });
@@ -64,15 +62,15 @@ namespace CodeBlamer.MetricCalculator
             Console.WriteLine("{0} - {1}", DateTime.Now, msg);
         }
 
-        private static void GenerateAllVersions(string repositoryUrl)
+        private static void GenerateAllVersions(RepositoryUrl repositoryUrl)
         {
             var mongo = new MongoRepository();
-            var projects = mongo.GetProjects().First(x => x.ReposiroryUrl.Equals(repositoryUrl));
+            var projects = mongo.GetProjects().First(x => x.ReposiroryUrl.Equals(repositoryUrl.Url));
 
             projects.Commits.ForEach(x => GenerateVersion(repositoryUrl, x.SHA));
         }
 
-        private static void GenerateVersion(string repositoryUrl, string commit)
+        private static void GenerateVersion(RepositoryUrl repositoryUrl, string commit)
         {
             var repository = new Infra.RepositoryRetriever();
             repository.GenerateSpecificVersion(repositoryUrl,commit);

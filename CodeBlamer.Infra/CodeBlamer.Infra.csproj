@@ -54,7 +54,7 @@
     <Compile Include="Project.cs" />
     <Compile Include="RepositoryRetriever.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Url.cs" />
+    <Compile Include="RepositoryUrl.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using CodeBlamer.Infra;
 
 namespace CodeBlamer.MetricCalculator
 {
@@ -12,18 +13,32 @@ namespace CodeBlamer.MetricCalculator
     {
         public string SolutionPath { get; set; }
         public List<string> Projects { get; set; }
-        private readonly string _outputFolder;
-        private readonly string _solutionFolder;
+        private readonly RepositoryUrl _repositoryUrl;
         private readonly string _commit;
 
-        public Solution(string solutionFolder, string commit)
+        public Solution(RepositoryUrl repositoryUrl, string commit)
         {
-            var solutionFiles = SearchInFolder(new DirectoryInfo(solutionFolder));
+            _repositoryUrl = repositoryUrl;
+            _commit = commit;
+
+            var solutionFiles = SearchInFolder(new DirectoryInfo(GetVersionPath()));
             SolutionPath = solutionFiles[0].FullName;
             Projects = GetProjects();
-            _solutionFolder = solutionFolder;
-            _outputFolder = solutionFolder.Replace("Versions","Builds");
-            _commit = commit;
+        }
+
+        public string GetVersionPath()
+        {
+            return _repositoryUrl.GetVersionPath(_commit);
+        }
+
+        public string GetBuildPath()
+        {
+            return _repositoryUrl.GetBuildPath(_commit);
+        }
+
+        public string GetResultPath(string projectName)
+        {
+            return _repositoryUrl.GetResultPath(_commit, projectName);
         }
 
         private List<string> GetProjects()
@@ -54,7 +69,7 @@ namespace CodeBlamer.MetricCalculator
             var parameters = "\"{0}\" /t:build /m:4 /nr:true /p:OutputPath={1} /nologo";
 
             RunExternalExe("C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\MSBuild.exe",
-                           string.Format(parameters, SolutionPath, _outputFolder));
+                           string.Format(parameters, SolutionPath, GetBuildPath()));
             
         }
 
@@ -66,13 +81,13 @@ namespace CodeBlamer.MetricCalculator
         private void CalculateMetricsForProject(string projectName)
         {
             var parameters = "/file:\"{0}\" /out:\"{1}\"";
-            var metricsOutputFolder = _solutionFolder.Replace("Versions", "Results") + "\\" + projectName;
+            var metricsOutputFolder = GetResultPath(projectName);
 
             Directory.CreateDirectory(metricsOutputFolder);
 
             var metricsOutputPath = metricsOutputFolder + "\\result.xml";
 
-            var file = new DirectoryInfo(_outputFolder).GetFiles(projectName + ".*")[0];
+            var file = new DirectoryInfo(GetBuildPath()).GetFiles(projectName + ".*")[0];
 
             var dllPath = file.FullName;
 
