@@ -1,0 +1,74 @@
+﻿@using System.Web.Optimization
+@model CodeBlamer.Web.Models.RepositoryDetailViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/css/aciTree")
+
+<div class="container firstContainer">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">@Model.RepositoryName</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group col-sm-6">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Author</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static">@Model.RepositoryAuthor</p>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="inputEmail3" class="col-sm-2 control-label">URL</label>
+                            <div class="col-sm-10">
+                                <p class="form-control-static">@Model.RepositoryUrl</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">File Tree</h3>
+                </div>
+                <div class="panel-body">
+                    <div id="tree" class="aciTree">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Metrics</h3>
+                </div>
+                <div class="panel-body">
+                    <div id="chart_div" style="width: 100%; height: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/aciTree")
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+    <script type="text/javascript">
+        var repoDetailUrl = {
+            urlNodeMetrics: '@Url.Action("GetNodeMetrics")',
+            urlProjectTree: '@Url.Action("GetProjectTree")'
+        };
+
+        var repoDetailView = new RepoDetailView();
+    </script>
+}

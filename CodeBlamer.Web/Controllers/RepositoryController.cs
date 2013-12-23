@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using CodeBlamer.Infra.Models;
+using CodeBlamer.Web.Models;
 using LibGit2Sharp;
 using CodeBlamer.Infra;
 using Type = CodeBlamer.Infra.Models.Type;
@@ -19,7 +20,21 @@ namespace CodeBlamer.Web.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var viewModel = new RepositoryListViewModel();
+            viewModel.Projects = new MongoRepository().GetProjects();
+            return View(viewModel);
+        }
+
+        public ActionResult Detail(string repositoryUrl)
+        {
+            var project = new MongoRepository().GetProjects().First(x => x.RepositoryUrl == repositoryUrl);
+            var viewModel = new RepositoryDetailViewModel();
+
+            viewModel.RepositoryName = project.RepositoryName;
+            viewModel.RepositoryAuthor = project.RepositoryAuthor;
+            viewModel.RepositoryUrl = project.RepositoryUrl;
+
+            return View(viewModel);
         }
 
         public ActionResult AddRepository(string repositoryUrl)

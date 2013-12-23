@@ -123,21 +123,40 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RepositoryController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\RepositoryDetailViewModel.cs" />
+    <Compile Include="Models\RepositoryListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Content\css\lib\bootstrap\bootstrap-theme.css" />
+    <Content Include="Content\css\lib\bootstrap\bootstrap-theme.min.css" />
+    <Content Include="Content\css\lib\bootstrap\bootstrap.css" />
+    <Content Include="Content\css\lib\bootstrap\bootstrap.min.css" />
     <Content Include="Content\css\lib\aciTree\aciTree.css" />
+    <Content Include="Content\css\lib\dataTables\dataTables.bootstrap.css" />
     <Content Include="Content\css\lib\image\tree.png" />
+    <Content Include="Content\css\style.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\app\view\RepoDetailView.js" />
+    <Content Include="Scripts\app\util\class.js" />
+    <Content Include="Scripts\lib\bootstrap\bootstrap.js" />
+    <Content Include="Scripts\lib\bootstrap\bootstrap.min.js" />
     <Content Include="Scripts\lib\aciTree\sample.json" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="Scripts\lib\jquery\jquery-2.0.3.intellisense.js" />
+    <Content Include="Scripts\lib\dataTables\dataTables.bootstrap.js" />
+    <Content Include="Scripts\lib\dataTables\jquery.dataTables.js" />
     <Content Include="Scripts\lib\jquery\jquery-2.0.3.js" />
     <Content Include="Scripts\lib\jquery\jquery-2.0.3.min.js" />
     <Content Include="Scripts\lib\aciTree\jquery.aciPlugin.min.js" />
@@ -151,11 +170,12 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\lib\jquery\jquery-2.0.3.min.map" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Repository\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
-    <Folder Include="Scripts\app\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
