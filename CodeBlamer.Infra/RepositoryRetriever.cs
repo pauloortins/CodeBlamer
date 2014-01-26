@@ -17,13 +17,15 @@ namespace CodeBlamer.Infra
 
         private void CloneProject(RepositoryUrl repositoryUrl)
         {
-            Repository.Clone(repositoryUrl.Url, repositoryUrl.GetRepositoryPath());
+            var pathResolver = new PathResolver(repositoryUrl.Url);
+            Repository.Clone(repositoryUrl.Url, pathResolver.GetRepositoryPath());
         }
 
-        private IQueryableCommitLog GetCommits(RepositoryUrl repositoryUrl)
+        private IQueryable<Commit> GetCommits(RepositoryUrl repositoryUrl)
         {
-            var repository = new Repository(repositoryUrl.GetRepositoryPath());
-            return repository.Commits;
+            var pathResolver = new PathResolver(repositoryUrl.Url);
+            var repository = new Repository(pathResolver.GetRepositoryPath());
+            return repository.Commits.OrderByDescending(x => x.Author.When.UtcDateTime).Take(1).AsQueryable();
         }
 
         private string GetRepositoryAuthor(string repositoryUrl)
@@ -38,7 +40,7 @@ namespace CodeBlamer.Infra
                 repositoryUrl.Replace("https://github.com/", string.Empty).Replace(".git", string.Empty).Split('/')[1];
         }
 
-        private void InsertCommits(string repositoryUrl, IQueryableCommitLog commits)
+        private void InsertCommits(string repositoryUrl, IQueryable<Commit> commits)
         {
             var project = new Project()
                 {
@@ -48,18 +50,20 @@ namespace CodeBlamer.Infra
                 };
 
             project.Commits =
-                commits.Select(x => new Commits {Author = x.Author.Name, Date = x.Author.When.UtcDateTime, SHA = x.Sha}).ToList();
+                commits.Take(100).Select(x => new Commits {Author = x.Author.Name, Date = x.Author.When.UtcDateTime, SHA = x.Sha}).ToList();
 
             new MongoRepository().InsertProject(project);
         }
 
         public void GenerateSpecificVersion(RepositoryUrl repositoryUrl, string commit)
         {
-            var repositoryFolder = repositoryUrl.GetRepositoryPath();
+            var pathResolver = new PathResolver(repositoryUrl.Url, commit);
+
+            var repositoryFolder = pathResolver.GetRepositoryPath();
             var repository = new Repository(repositoryFolder + "/.git");
             repository.Checkout(commit);
 
-            var commitFolder = repositoryUrl.GetVersionPath(commit);
+            var commitFolder = pathResolver.GetVersionPath();
             Directory.CreateDirectory(commitFolder);
 
             DirectoryCopy(repositoryFolder, commitFolder, true);

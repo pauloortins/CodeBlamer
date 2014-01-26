@@ -26,7 +26,6 @@ namespace CodeBlamer.MetricCalculator
 
                 if (repositoryUrl == null)
                 {
-                    WriteToConsole("Url not found");
                     Thread.Sleep(1000);
                     continue;
                 }
@@ -40,9 +39,12 @@ namespace CodeBlamer.MetricCalculator
                 GenerateAllVersions(repositoryUrl);
 
                 WriteToConsole("Calculating Metrics");
-                CalculateMetrics(repositoryUrl);                
+                CalculateMetrics(repositoryUrl);
 
-                mongo.DeleteUrl(repositoryUrl);
+                //WriteToConsole("Removing Url");
+                //mongo.DeleteUrl(repositoryUrl);
+
+                WriteToConsole("Complete");
             }
         }
 
@@ -59,10 +61,11 @@ namespace CodeBlamer.MetricCalculator
                         solution.Build();
                         solution.CalculateMetrics();
                         solution.SaveMetrics();
+                        WriteToConsole(x.SHA + "- OK");
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-
+                        WriteToConsole(x.SHA + "- ERROR - " + ex.Message);
                     }
                     
                 });
@@ -78,7 +81,7 @@ namespace CodeBlamer.MetricCalculator
             var mongo = new MongoRepository();
             var projects = mongo.GetProjects().First(x => x.RepositoryUrl.Equals(repositoryUrl.Url));
 
-            projects.Commits.ForEach(x => GenerateVersion(repositoryUrl, x.SHA));
+            projects.Commits.ToList().ForEach(x => GenerateVersion(repositoryUrl, x.SHA));
         }
 
         private static void GenerateVersion(RepositoryUrl repositoryUrl, string commit)

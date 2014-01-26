@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using CodeBlamer.Infra;
 using CodeBlamer.Infra.Extensions;
 using CodeBlamer.Infra.Models;
+using CodeBlamer.MetricCalculator.Metrics;
 
 namespace CodeBlamer.MetricCalculator
 {
@@ -18,35 +19,51 @@ namespace CodeBlamer.MetricCalculator
         public List<string> Projects { get; set; }
         private readonly RepositoryUrl _repositoryUrl;
         private readonly string _commit;
+        private readonly PathResolver _pathResolver;
+        private readonly List<MetricService> _metricServices;
 
         public Solution(RepositoryUrl repositoryUrl, string commit)
         {
             _repositoryUrl = repositoryUrl;
             _commit = commit;
+            _pathResolver = new PathResolver(repositoryUrl.Url, commit);
+
+            _metricServices = new List<MetricService>()
+                {
+                    new PowerMetricsService(_pathResolver),
+                    new FxCopService(_pathResolver),
+                    new StyleCopService(_pathResolver)
+                };
 
             var solutionFiles = GetVersionPath().SearchFor("*.sln");
             SolutionPath = solutionFiles[0].FullName;
             Projects = GetProjects();
         }
 
+        public string GetSolutionName()
+        {
+            var solutionFiles = GetVersionPath().SearchFor("*.sln");
+            return solutionFiles[0].Name;
+        }
+
         public string GetVersionPath()
         {
-            return _repositoryUrl.GetVersionPath(_commit);
+            return _pathResolver.GetVersionPath();
         }
 
         public string GetBuildPath()
         {
-            return _repositoryUrl.GetBuildPath(_commit);
+            return _pathResolver.GetBuildPath();
         }
 
-        public string GetResultPath(string projectName)
+        public string GetResultPath()
         {
-            return _repositoryUrl.GetResultPath(_commit, projectName);
+            return _pathResolver.GetResultPath();
         }
 
-        public string GetResultXmlPath(string projectName)
+        public string GetResultXmlPath(FileInfo fileInfo)
         {
-            return _repositoryUrl.GetResultXmlPath(_commit, projectName);
+            return _pathResolver.GetResultXmlPath(fileInfo);
         }
 
         private List<string> GetProjects()
@@ -61,44 +78,58 @@ namespace CodeBlamer.MetricCalculator
         public void Build()
         {
             //strCommandParameters are parameters to pass to program
-            var parameters = "\"{0}\" /t:build /m:4 /nr:true /p:OutputPath={1} /nologo";
+            var parameters = "\"{0}\" /t:build /m:4 /nr:true /nologo /p:CustomAfterMicrosoftCommonTargets=E:\\CodeBlamer\\filter.targets";
+            var path = GetVersionPath();
 
-            "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\MSBuild.exe".Run(string.Format(parameters, SolutionPath, GetBuildPath()));
+            var cdCommand = string.Format("E: && cd {0}", path);
+            var buildCommand = "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\MSBuild.exe " + string.Format(parameters, GetSolutionName());
+
+            CommandExtensions.Run(new string[] {cdCommand, buildCommand});
+
+            var files = new DirectoryInfo(GetVersionPath()).SearchFor("System.Core.dll");
+            files.ForEach(x => x.Delete());
         }
 
         public void CalculateMetrics()
         {
-            Projects.ForEach(CalculateMetricsForProject);
+            var compiledDlls = GetCompiledDlls();
+            compiledDlls.ForEach(CalculateMetricsForDll);
         }
 
-        private void CalculateMetricsForProject(string projectName)
+        private void CalculateMetricsForDll(FileInfo dll)
         {
-            var parameters = "/file:\"{0}\" /out:\"{1}\"";
-            var metricsOutputFolder = GetResultPath(projectName);
+            _metricServices.ForEach(x => x.CalculateMetrics(dll));
+        }
 
-            metricsOutputFolder.CreateDirectory();
+        private List<FileInfo> GetCompiledDlls()
+        {
+            var path = GetVersionPath();
 
-            var metricsOutputPath = GetResultXmlPath(projectName);
+            var directories = from subdirectory in Directory.GetDirectories(path, "obj", SearchOption.AllDirectories) 
+                              select subdirectory + "/Debug";
 
-            var file = GetBuildPath().SearchForInSurface(projectName + ".*")[0];
+            return directories.SelectMany<string, FileInfo>(x =>
+                {
+                    var dlls = x.SearchForInSurface("*.dll");
+                    var exes = x.SearchForInSurface("*.exe");
+                    dlls.AddRange(exes);
 
-            var dllPath = file.FullName;
-
-            "C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\Team Tools\\Static Analysis Tools\\FxCop\\Metrics.exe".Run(
-                           string.Format(parameters, dllPath, metricsOutputPath));
+                    return dlls;
+                }).ToList();
+            
         }
 
         public void SaveMetrics()
         {
-            var modules = this.Projects.Select(GetMetricsForProject).ToList();
+            var modules = GetCompiledDlls().Select(GetMetricsForDll).ToList();
             var mongo = new MongoRepository();
             mongo.SaveMetrics(_repositoryUrl, _commit, modules);
         }
         
-        private Module GetMetricsForProject(string projectName)
+        private Module GetMetricsForDll(FileInfo fileInfo)
         {
             var document =
-                XDocument.Load(GetResultXmlPath(projectName));
+                XDocument.Load(GetResultXmlPath(fileInfo));
 
             var moduleXml = document.Root.Elements().Descendants().First(x => x.Name == "Module");
 

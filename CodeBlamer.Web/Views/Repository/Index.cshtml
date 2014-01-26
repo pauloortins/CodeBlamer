@@ -4,6 +4,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="container firstContainer">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Add Repository</h3>
+        </div>
+        <div class="panel-body">
+            @using(Ajax.BeginForm("AddRepository", null, new AjaxOptions()  , new {id="frmAddRepository", @class = "form-horizontal", role = "form" })) {
+                <div class="form-group col-sm-6">
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="txtNewRepository" placeholder="Enter repository's url" name="repositoryUrl">
+                    </div>
+                    <div class="col-sm-2">
+                        <button id="btnRequest" type="button" class="btn btn-primary">Request</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Repositories</h3>
@@ -23,7 +43,7 @@
                     @foreach (var project in Model.Projects)
                     {
                         <tr>
-                            <td>@Html.ActionLink(project.RepositoryName, "Detail", new { repositoryUrl = project.RepositoryUrl}) </td>
+                            <td>@Html.ActionLink(project.RepositoryName, "Detail", new { repositoryUrl = project.RepositoryUrl }) </td>
                             <td>@project.RepositoryAuthor</td>
                             <td>@project.RepositoryUrl</td>
                         </tr>
@@ -44,7 +64,7 @@
     <script type="text/javascript" language="javascript" class="init">
 
         $(document).ready(function () {
-            $('#example').dataTable();
+            var repoListView = new RepoListView();
         });
 
     </script>

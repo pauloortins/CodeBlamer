@@ -16,7 +16,7 @@ namespace CodeBlamer.Infra.Models
             var metricsXml = element.Element("Metrics");
             foreach (var metric in metricsXml.Elements("Metric"))
             {
-                var metricValue = Int32.Parse(metric.Attribute("Value").Value);
+                var metricValue = Int32.Parse(metric.Attribute("Value").Value.Replace(".",""));
                 switch (metric.Attribute("Name").Value)
                 {
                     case "MaintainabilityIndex":

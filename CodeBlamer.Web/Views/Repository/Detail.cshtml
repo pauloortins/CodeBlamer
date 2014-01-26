@@ -64,11 +64,14 @@
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
     <script type="text/javascript">
-        var repoDetailUrl = {
-            urlNodeMetrics: '@Url.Action("GetNodeMetrics")',
-            urlProjectTree: '@Url.Action("GetProjectTree")'
-        };
+        
+        $(document).ready(function () {
+            var repoDetailUrl = {
+                urlNodeMetrics: '@Url.Action("GetNodeMetrics")',
+                urlProjectTree: '@Url.Action("GetProjectTree")'
+            };
 
-        var repoDetailView = new RepoDetailView();
+            var repoDetailView = new RepoDetailView();
+        });
     </script>
 }

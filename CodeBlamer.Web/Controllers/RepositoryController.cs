@@ -40,13 +40,13 @@ namespace CodeBlamer.Web.Controllers
         public ActionResult AddRepository(string repositoryUrl)
         {
             new MongoRepository().InsertUrl(repositoryUrl);
-            return View("Index");
+            return Json(new{});
         }
 
         [HttpGet]
         public ActionResult GetProjectTree(string repositoryUrl)
         {
-            var projects = new MongoRepository().GetProjects().First(x => x.RepositoryUrl == "https://github.com/pauloortins/CodeBlamer");
+            var projects = new MongoRepository().GetProjects().First(x => x.RepositoryUrl == repositoryUrl);
 
             var result = projects.Commits.OrderByDescending(x => x.Date).First().Modules.Select(module => new 
                 {
@@ -85,7 +85,7 @@ namespace CodeBlamer.Web.Controllers
         {
             var mongo = new MongoRepository();
             var pieces = node.Split('>');
-            var project = mongo.GetProjects().First(x => x.RepositoryUrl == "https://github.com/pauloortins/CodeBlamer");
+            var project = mongo.GetProjects().First(x => x.RepositoryUrl == repositoryUrl);
             var commits = project.Commits.OrderBy(x => x.Date);
 
             if (pieces.Length == 1)
