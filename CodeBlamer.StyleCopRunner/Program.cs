@@ -130,7 +130,7 @@ namespace CodeBlamer.StyleCopRunner
         /// </summary>
         static SwitchCollection s_switches;
 
-        static XmlDocument s_customReport;
+        static ViolationList s_customReport;
 
         static string s_outputFile;
 
@@ -139,10 +139,7 @@ namespace CodeBlamer.StyleCopRunner
 
         static void InitCustomReport()
         {
-            s_customReport = new XmlDocument();
-
-            var header = CustomReport.CreateElement("", "StyleCopViolations", "");
-            CustomReport.AppendChild(header);
+            s_customReport = new ViolationList();
         }
 
         static void SaveCustomReport()
@@ -546,31 +543,13 @@ namespace CodeBlamer.StyleCopRunner
         static void OnViolationEncountered(object sender, ViolationEventArgs e)
         {
             // Note: To be used for generating custom violation reports.
-
-            var className = e.Element.Document.SourceCode.Name;
-
-            var csElement = (CsElement)e.Element;
-            var fullName = csElement.FullNamespaceName;
-
-            var violation = CustomReport.CreateElement("", "Violation", "");
-            violation.SetAttribute("ClassName", className);
-            violation.SetAttribute("Namespace", fullName);
-            violation.SetAttribute("Declaration", csElement.Declaration.Name);
-            violation.SetAttribute("RuleId", e.Violation.Rule.CheckId);
-            violation.SetAttribute("Type", csElement.GetType().Name);
-            violation.SetAttribute("RuleNamespace", e.Violation.Rule.Namespace);
-            violation.SetAttribute("Rule", e.Violation.Rule.Name);
-            violation.SetAttribute("LineNumber", e.Violation.Line.ToString());
-            violation.SetAttribute("RuleGroup", e.Violation.Rule.RuleGroup);
-            violation.SetAttribute("Message", e.Violation.Rule.Context);
-
-            CustomReport.FirstChild.AppendChild(violation);
+            CustomReport.AddViolation(new Violation(e));
         }
 
         ////////////////////////////////////////////////////////////////////////
         // Properties
 
-        static XmlDocument CustomReport
+        static ViolationList CustomReport
         {
             get { return s_customReport; }
         }

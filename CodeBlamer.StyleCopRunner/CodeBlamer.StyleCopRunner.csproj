@@ -63,6 +63,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Violation.cs" />
+    <Compile Include="ViolationList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
