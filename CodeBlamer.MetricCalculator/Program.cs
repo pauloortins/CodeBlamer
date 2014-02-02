@@ -58,8 +58,8 @@ namespace CodeBlamer.MetricCalculator
                     //try
                     //{
                         var solution = new Solution(repositoryUrl, x.SHA);
-                        //solution.Build();
-                        //solution.CalculateMetrics();
+                        solution.Build();
+                        solution.CalculateMetrics();
                         solution.SaveMetrics();
                         WriteToConsole(x.SHA + "- OK");
                     //}

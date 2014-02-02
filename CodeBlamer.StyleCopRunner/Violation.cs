@@ -25,15 +25,12 @@ namespace CodeBlamer.StyleCopRunner
 
         public Violation(ViolationEventArgs eventArgs)
         {
-            var className = eventArgs.Element.Document.SourceCode.Name;
-
             var csElement = (CsElement)eventArgs.Element;
             var fullName = csElement.FullNamespaceName;
-            var declarationName = csElement.Declaration.Name;
 
-            ClassName = className;
+            ClassName = GetClassName(csElement);
             FullName = fullName;
-            Declaration = declarationName;
+            Declaration = GetDeclaration(csElement);
             RuleId = eventArgs.Violation.Rule.CheckId;
             Kind = csElement.GetType().Name;
             RuleNamespace = eventArgs.Violation.Rule.Namespace;
@@ -41,18 +38,56 @@ namespace CodeBlamer.StyleCopRunner
             LineNumber = eventArgs.Violation.Line.ToString();
             RuleGroup = eventArgs.Violation.Rule.RuleGroup;
             Message = eventArgs.Violation.Rule.Context;
-            Namespace = GetNameSpace(fullName, className, declarationName, csElement.GetType().Name);
+            Namespace = GetNameSpace(csElement);
         }
 
-        private string GetNameSpace(string fullName, string className, string declarationName, string type)
+        private string GetDeclaration(CsElement codeElement)
         {
-            fullName = fullName.Replace("Root.", string.Empty);
-            if (type == "Namespace")
+            if (codeElement.GetType().Name == "Method")
             {
-                return fullName;
+                var methodDeclaration = (Method)codeElement;
+
+                var parameters = string.Join(", ", methodDeclaration.Parameters.Select(x => x.Type.Text));
+                var returnType = methodDeclaration.ReturnType != null ? " : " + methodDeclaration.ReturnType.Text : string.Empty;
+
+                var declaration = methodDeclaration.Declaration.Name + "(" + parameters + ")" + returnType;
+
+                return declaration;
             }
 
-            return fullName.Replace("." + className.Split('.')[0], "").Replace("." + declarationName, "");
+            return codeElement.Declaration.Name;
+        }
+
+        private string GetClassName(CsElement codeElement)
+        {
+            if (codeElement.GetType().Name == "DocumentRoot" ||
+                codeElement.GetType().Name == "Namespace" ||
+                codeElement.GetType().Name == "AssemblyOrModuleAttribute")
+            {
+                return string.Empty;
+            }
+
+            if (codeElement.GetType().Name == "UsingDirective")
+            {
+                return "UsingDirective";
+            }
+
+            if (codeElement.GetType().Name == "Class" || codeElement.GetType().Name == "Interface" || codeElement.GetType().Name == "Enum")
+            {
+                return codeElement.Declaration.Name;
+            }
+
+            return GetClassName((CsElement)codeElement.Parent);
+        }
+
+        private string GetNameSpace(CsElement codeElement)
+        {
+            while (codeElement.GetType().Name != "Namespace" && codeElement.GetType().Name != "DocumentRoot")
+            {
+                codeElement = (CsElement)codeElement.Parent;
+            }
+
+            return codeElement.FullNamespaceName.Replace("Root.", string.Empty);
         }
 
         public XElement ToXmlElement()
@@ -68,7 +103,7 @@ namespace CodeBlamer.StyleCopRunner
             violation.SetAttributeValue("LineNumber", LineNumber);
             violation.SetAttributeValue("RuleGroup", RuleGroup);
             violation.SetAttributeValue("Message", Message);
-            violation.SetAttributeValue("NameSpace", GetNameSpace(FullName, ClassName, Declaration, Kind));
+            violation.SetAttributeValue("NameSpace", Namespace);
 
             return violation;
         }

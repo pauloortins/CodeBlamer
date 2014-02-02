@@ -50,7 +50,7 @@ namespace CodeBlamer.StyleCopRunner
             var namespaceNode = namespaces.Elements().First(x => x.Attribute("Name").Value == violation.Namespace);
             AddNodeIfNotExists(namespaceNode, "Violations");
 
-            if (violation.Kind == "Namespace")
+            if (violation.Kind == "Namespace"  || violation.ClassName == "")
             {
                 var violations = namespaceNode.Element("Violations");
                 violations.Add(violation.ToXmlElement());
@@ -66,7 +66,7 @@ namespace CodeBlamer.StyleCopRunner
             var type = types.Elements().First(x => x.Attribute("Name").Value == violation.ClassName);
             AddNodeIfNotExists(type, "Violations");
 
-            if (violation.Kind == "Class")
+            if (violation.Kind == "Class" || violation.Kind == "Interface" || violation.Kind == "Enum")
             {
                 var violations = type.Element("Violations");
                 violations.Add(violation.ToXmlElement());
@@ -74,8 +74,6 @@ namespace CodeBlamer.StyleCopRunner
             }
 
             AddNodeIfNotExists(type, "Members");
-
-
 
             var members = type.Element("Members");
 

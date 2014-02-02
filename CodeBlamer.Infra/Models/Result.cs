@@ -115,6 +115,7 @@ namespace CodeBlamer.Infra.Models
             if (member == null)
             {
                 member = new NewMember();
+                member.Name = memberName;
                 type.Members.Add(member);
             }
 
@@ -237,9 +238,39 @@ namespace CodeBlamer.Infra.Models
 
     public class StyleCopMetrics
     {
+        public List<Violation> Violations { get; set; } 
+
         public StyleCopMetrics(XElement element)
         {
-            
+            Violations = new List<Violation>();
+
+            var violationsXml = element.Element("Violations");
+            foreach (var violationElement in violationsXml.Elements("Violation"))
+            {
+                var violation = new Violation();
+                violation.RuleId = violationElement.Attribute("RuleId").Value;
+                violation.RuleGroup = violationElement.Attribute("RuleGroup") != null
+                                          ? violationElement.Attribute("RuleGroup").Value
+                                          : string.Empty;
+                violation.Kind = violationElement.Attribute("Kind").Value;
+                violation.RuleNamespace = violationElement.Attribute("RuleNamespace").Value;
+                violation.Rule = violationElement.Attribute("Rule").Value;
+                violation.LineNumber = Int32.Parse(violationElement.Attribute("LineNumber").Value);
+                violation.Message = violationElement.Attribute("Message").Value;
+
+                Violations.Add(violation);
+            }
         }
+    }
+
+    public class Violation
+    {
+        public string RuleId { get; set; }
+        public string Kind { get; set; }
+        public string RuleNamespace { get; set; }
+        public string Rule { get; set; }
+        public int LineNumber { get; set; }
+        public string RuleGroup { get; set; }
+        public string Message { get; set; }
     }
 }
