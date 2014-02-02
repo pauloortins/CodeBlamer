@@ -55,6 +55,15 @@ namespace CodeBlamer.StyleCopRunner
                 return declaration;
             }
 
+            if (codeElement.GetType().Name == "Constructor")
+            {
+                var constructorDeclaration = (Constructor)codeElement;
+                var parameters = string.Join(", ", constructorDeclaration.Parameters.Select(x => x.Type.Text));
+                var declaration = constructorDeclaration.Declaration.Name + "(" + parameters + ")";
+
+                return declaration;
+            }
+
             return codeElement.Declaration.Name;
         }
 
