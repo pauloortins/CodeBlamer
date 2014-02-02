@@ -126,14 +126,21 @@ namespace CodeBlamer.MetricCalculator
             mongo.SaveMetrics(_repositoryUrl, _commit, modules);
         }
         
-        private Module GetMetricsForDll(FileInfo fileInfo)
+        private NewModule GetMetricsForDll(FileInfo fileInfo)
         {
-            var document =
-                XDocument.Load(GetResultXmlPath(fileInfo));
+            var result = new MetricResults();
 
-            var moduleXml = document.Root.Elements().Descendants().First(x => x.Name == "Module");
+            _metricServices.ForEach(service =>
+                {
+                    var document = XDocument.Load(service.GenerateResultPath(fileInfo));
+                    var moduleXml = document.Root.Descendants("Module").FirstOrDefault();
+                    var projFileName = fileInfo.Directory.Parent.Parent.SearchFor("*.csproj")[0].Name;
+                    moduleXml.Attribute("Name").SetValue(projFileName);
 
-            return new Module(moduleXml);
+                    result.AddModule(moduleXml, service.GetMetricSource());
+                });
+
+            return result.GetModule();
         }
     }
 }

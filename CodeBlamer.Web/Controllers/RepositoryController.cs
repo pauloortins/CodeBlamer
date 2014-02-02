@@ -123,7 +123,7 @@ namespace CodeBlamer.Web.Controllers
             return new
                 {
                     Date = date,
-                    Metrics = module != null ? module.Metrics : new Metrics()
+                    Metrics = module != null ? module.PowerMetrics : new PowerMetrics()
                 };
         }
 
@@ -131,7 +131,7 @@ namespace CodeBlamer.Web.Controllers
         {
             var date = commit.Date;
             var module = commit.Modules != null ? commit.Modules.FirstOrDefault(x => x.Name == moduleName) : null;
-            Namespace namespc = null;
+            NewNamespace namespc = null;
 
             if (module != null)
             {
@@ -141,7 +141,7 @@ namespace CodeBlamer.Web.Controllers
             return new
                 {
                     Date = date,
-                    Metrics = namespc != null ? namespc.Metrics : new Metrics()
+                    Metrics = namespc != null ? namespc.PowerMetrics : new PowerMetrics()
                 };
         }
 
@@ -149,8 +149,8 @@ namespace CodeBlamer.Web.Controllers
         {
             var date = commit.Date;
             var module = commit.Modules != null ? commit.Modules.FirstOrDefault(x => x.Name == moduleName) : null;
-            Namespace namespc = null;
-            Type type = null;
+            NewNamespace namespc = null;
+            NewType type = null;
 
             if (module != null)
             {
@@ -165,7 +165,7 @@ namespace CodeBlamer.Web.Controllers
             return new
             {
                 Date = date,
-                Metrics = type != null ? type.Metrics : new Metrics()
+                Metrics = type != null ? type.PowerMetrics : new PowerMetrics()
             };
         }
 
@@ -173,9 +173,9 @@ namespace CodeBlamer.Web.Controllers
         {
             var date = commit.Date;
             var module = commit.Modules != null ? commit.Modules.FirstOrDefault(x => x.Name == moduleName) : null;
-            Namespace namespc = null;
-            Type type = null;
-            Member member = null;
+            NewNamespace namespc = null;
+            NewType type = null;
+            NewMember member = null;
 
             if (module != null)
             {
@@ -195,7 +195,7 @@ namespace CodeBlamer.Web.Controllers
             return new
             {
                 Date = date,
-                Metrics = member != null ? member.Metrics : new Metrics()
+                Metrics = member != null ? member.PowerMetrics : new PowerMetrics()
             };
         }
     }

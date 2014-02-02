@@ -7,12 +7,12 @@ namespace CodeBlamer.Infra.Models
     {
         public Commits()
         {
-            Modules = new List<Module>();
+            Modules = new List<NewModule>();
         }
 
         public string Author { get; set; }
         public string SHA { get; set; }
         public DateTime Date { get; set; }
-        public List<Module> Modules { get; set; }
+        public List<NewModule> Modules { get; set; }
     }
 }

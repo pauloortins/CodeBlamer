@@ -15,6 +15,11 @@ namespace CodeBlamer.MetricCalculator.Metrics
         {
         }
 
+        public override MetricsSource GetMetricSource()
+        {
+            return MetricsSource.StyleCop;
+        }
+
         public override string GenerateResultPath(FileInfo dll)
         {
             return PathResolver.GetResultXmlPath(dll).Replace(".xml", "-styleCop.xml");

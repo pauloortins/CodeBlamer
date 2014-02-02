@@ -54,7 +54,7 @@ namespace CodeBlamer.Infra
             collection.Remove(Query.EQ("_id", url.Id));
         }
 
-        public void SaveMetrics(RepositoryUrl repositoryUrl, string commit, List<Module> modules)
+        public void SaveMetrics(RepositoryUrl repositoryUrl, string commit, List<NewModule> modules)
         {
             var projects = GetDatabase().GetCollection<Project>("projects");
 

@@ -14,6 +14,11 @@ namespace CodeBlamer.MetricCalculator.Metrics
         {
         }
 
+        public override MetricsSource GetMetricSource()
+        {
+            return MetricsSource.FxCop;
+        }
+
         public override string GenerateResultPath(FileInfo dll)
         {
             return PathResolver.GetResultXmlPath(dll).Replace(".xml", "-fxCop.xml");

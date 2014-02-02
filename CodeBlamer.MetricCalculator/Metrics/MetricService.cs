@@ -29,6 +29,7 @@ namespace CodeBlamer.MetricCalculator.Metrics
             CommandExtensions.Run(new string[] { cdCommand, metricsCommand });
         }
 
+        public abstract MetricsSource GetMetricSource();
         public abstract string GenerateResultPath(FileInfo dll);
         public abstract string GenerateMetricsCommand(FileInfo dll);
     }

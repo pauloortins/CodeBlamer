@@ -32,11 +32,11 @@ namespace CodeBlamer.MetricCalculator
 
                 WriteToConsole(string.Format("{0} found", repositoryUrl.Url));
 
-                WriteToConsole("Cloning Repository");
-                repository.AddRepository(repositoryUrl);
+                //WriteToConsole("Cloning Repository");
+                //repository.AddRepository(repositoryUrl);
 
-                WriteToConsole("Generating Versions");
-                GenerateAllVersions(repositoryUrl);
+                //WriteToConsole("Generating Versions");
+                //GenerateAllVersions(repositoryUrl);
 
                 WriteToConsole("Calculating Metrics");
                 CalculateMetrics(repositoryUrl);
@@ -55,18 +55,18 @@ namespace CodeBlamer.MetricCalculator
 
             projects.Commits.ForEach(x =>
                 {
-                    try
-                    {
+                    //try
+                    //{
                         var solution = new Solution(repositoryUrl, x.SHA);
-                        solution.Build();
-                        solution.CalculateMetrics();
+                        //solution.Build();
+                        //solution.CalculateMetrics();
                         solution.SaveMetrics();
                         WriteToConsole(x.SHA + "- OK");
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteToConsole(x.SHA + "- ERROR - " + ex.Message);
-                    }
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    WriteToConsole(x.SHA + "- ERROR - " + ex.Message);
+                    //}
                     
                 });
         }
