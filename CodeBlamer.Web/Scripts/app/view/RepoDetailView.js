@@ -1,12 +1,12 @@
 ﻿var RepoDetailView = Class.extend({
-    init: function() {
-        google.load("visualization", "1", { packages: ["corechart"] });
+    init: function () {                
         this._createBinds();
         this._initElements();
     },
     
     _createBinds: function() {
         this._tree = $("#tree");
+        this.lblRepositoryUrl = $("#lblRepositoryUrl");
     },
     
     _initElements: function () {
@@ -17,7 +17,7 @@
                 var itemData = api.itemData(item);
                 var node = itemData['node'];
 
-                $.get(repoDetailUrl.urlNodeMetrics, { repositoryUrl: "John", node: node })
+                $.get(repoDetailUrl.urlNodeMetrics, { repositoryUrl: that.lblRepositoryUrl.html(), node: node })
                   .done(function (data) {
                       var chartOptions = {
                           title: 'Company Performance',
@@ -34,7 +34,8 @@
         
         that._tree.aciTree({
             ajax: {
-                url: repoDetailUrl.urlProjectTree
+                url: repoDetailUrl.urlProjectTree,
+                data: { repositoryUrl: that.lblRepositoryUrl.html()}
             },
             selectable: true
         });
