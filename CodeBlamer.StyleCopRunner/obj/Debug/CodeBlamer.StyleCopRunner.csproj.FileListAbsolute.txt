@@ -12,7 +12,6 @@ C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.StyleCopRunner\bin\Deb
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.StyleCopRunner\bin\Debug\pl-PL\StyleCop.CSharp.Rules.resources.dll
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.StyleCopRunner\bin\Debug\pt-BR\StyleCop.CSharp.Rules.resources.dll
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.StyleCopRunner\bin\Debug\ru-RU\StyleCop.CSharp.Rules.resources.dll
-C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.StyleCopRunner\obj\Debug\CodeBlamer.StyleCopRunner.csprojResolveAssemblyReference.cache
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.StyleCopRunner\obj\Debug\CodeBlamer.StyleCopRunner.Properties.Resources.resources
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.StyleCopRunner\obj\Debug\CodeBlamer.StyleCopRunner.csproj.GenerateResource.Cache
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.StyleCopRunner\bin\Debug\CSharpCLI.dll

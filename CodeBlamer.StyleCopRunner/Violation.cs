@@ -47,24 +47,35 @@ namespace CodeBlamer.StyleCopRunner
             {
                 var methodDeclaration = (Method)codeElement;
 
-                var parameters = string.Join(", ", methodDeclaration.Parameters.Select(x => x.Type.Text));
+                var parameters = string.Join(",", methodDeclaration.Parameters.Select(x => x.Type.Text));
                 var returnType = methodDeclaration.ReturnType != null ? " : " + methodDeclaration.ReturnType.Text : string.Empty;
 
                 var declaration = methodDeclaration.Declaration.Name + "(" + parameters + ")" + returnType;
 
-                return declaration;
+                return declaration.Replace(",", ", ");
             }
 
             if (codeElement.GetType().Name == "Constructor")
             {
                 var constructorDeclaration = (Constructor)codeElement;
-                var parameters = string.Join(", ", constructorDeclaration.Parameters.Select(x => x.Type.Text));
+                var parameters = string.Join(",", constructorDeclaration.Parameters.Select(x => x.Type.Text));
                 var declaration = constructorDeclaration.Declaration.Name + "(" + parameters + ")";
 
-                return declaration;
+                return declaration.Replace(",", ", ");
             }
 
-            return codeElement.Declaration.Name;
+            if (codeElement.GetType().Name == "Accessor")
+            {
+                var accessor = (Accessor)codeElement;
+                var property = (Property)codeElement.Parent;
+                var parameters = string.Join(", ", accessor.Parameters.Select(x => x.Type.Text));
+                var returnType = accessor.ReturnType != null ? " : " + accessor.ReturnType.Text : string.Empty;
+
+                var declaration = property.Declaration.Name + "." + accessor.Declaration.Name + "(" + parameters + ")" + returnType;
+                return declaration.Replace(",", ", ");
+            }
+
+            return codeElement.Declaration.Name.Replace(",", ", ");
         }
 
         private string GetClassName(CsElement codeElement)
