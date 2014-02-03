@@ -123,7 +123,9 @@ namespace CodeBlamer.Web.Controllers
             return new
                 {
                     Date = date,
-                    Metrics = module != null ? module.PowerMetrics : new PowerMetrics()
+                    PowerMetrics = module != null ? module.PowerMetrics : new PowerMetrics(),
+                    FxCopMetrics = module != null ? module.FxCopMetrics : new FxCopMetrics(),
+                    StyleCopMetrics = module != null ? module.StyleCopMetrics : new StyleCopMetrics()
                 };
         }
 
@@ -141,7 +143,9 @@ namespace CodeBlamer.Web.Controllers
             return new
                 {
                     Date = date,
-                    Metrics = namespc != null ? namespc.PowerMetrics : new PowerMetrics()
+                    PowerMetrics = namespc != null ? namespc.PowerMetrics : new PowerMetrics(),
+                    FxCopMetrics = namespc != null ? namespc.FxCopMetrics : new FxCopMetrics(),
+                    StyleCopMetrics = namespc != null ? namespc.StyleCopMetrics : new StyleCopMetrics()
                 };
         }
 
@@ -165,7 +169,9 @@ namespace CodeBlamer.Web.Controllers
             return new
             {
                 Date = date,
-                Metrics = type != null ? type.PowerMetrics : new PowerMetrics()
+                PowerMetrics = type != null ? type.PowerMetrics : new PowerMetrics(),
+                FxCopMetrics = type != null ? type.FxCopMetrics : new FxCopMetrics(),
+                StyleCopMetrics = type != null ? type.StyleCopMetrics : new StyleCopMetrics()
             };
         }
 
@@ -195,7 +201,9 @@ namespace CodeBlamer.Web.Controllers
             return new
             {
                 Date = date,
-                Metrics = member != null ? member.PowerMetrics : new PowerMetrics()
+                PowerMetrics = member != null ? member.PowerMetrics : new PowerMetrics(),
+                FxCopMetrics = member != null ? member.FxCopMetrics : new FxCopMetrics(),
+                StyleCopMetrics = member != null ? member.StyleCopMetrics : new StyleCopMetrics()
             };
         }
     }

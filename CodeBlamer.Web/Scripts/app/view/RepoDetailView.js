@@ -20,14 +20,20 @@
                 $.get(repoDetailUrl.urlNodeMetrics, { repositoryUrl: that.lblRepositoryUrl.html(), node: node })
                   .done(function (data) {
                       var chartOptions = {
-                          title: 'Company Performance',
+                          title: '',
                           curveType: 'function',
                           legend: { position: 'bottom' },
                           pointSize: 3
                       };
 
-                      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-                      chart.draw(that._convertToChart(data), chartOptions);
+                      var powerMetricChart = new google.visualization.LineChart(document.getElementById('powerMetricsChart'));
+                      powerMetricChart.draw(that._convertToPowerMetricChart(data), chartOptions);
+                      
+                      var fxCopChart = new google.visualization.LineChart(document.getElementById('fxCopMetricsChart'));
+                      fxCopChart.draw(that._convertToFxCopChart(data), chartOptions);
+                      
+                      var styleCopChart = new google.visualization.LineChart(document.getElementById('styleCopMetricsChart'));
+                      styleCopChart.draw(that._convertToStyleCopChart(data), chartOptions);
                   });
             }
         });
@@ -39,9 +45,9 @@
             },
             selectable: true
         });
-    },
+    },    
     
-    _convertToChart: function convertToChart(metricsData) {
+    _convertToPowerMetricChart: function convertToChart(metricsData) {
         var data = new google.visualization.DataTable();
         data.addColumn('date', 'Commits');
         data.addColumn('number', 'MaintainabilityIndex');
@@ -54,11 +60,41 @@
 
         for (var i = 0; i < metricsData.length; i++) {
             data.setCell(i, 0, this._parseJsonDate(metricsData[i].Date));
-            data.setCell(i, 1, metricsData[i].Metrics["MaintainabilityIndex"]);
-            data.setCell(i, 2, metricsData[i].Metrics["CyclomaticComplexity"]);
-            data.setCell(i, 3, metricsData[i].Metrics["ClassCoupling"]);
-            data.setCell(i, 4, metricsData[i].Metrics["DepthOfInheritance"]);
-            data.setCell(i, 5, metricsData[i].Metrics["LinesOfCode"]);
+            data.setCell(i, 1, metricsData[i].PowerMetrics["MaintainabilityIndex"]);
+            data.setCell(i, 2, metricsData[i].PowerMetrics["CyclomaticComplexity"]);
+            data.setCell(i, 3, metricsData[i].PowerMetrics["ClassCoupling"]);
+            data.setCell(i, 4, metricsData[i].PowerMetrics["DepthOfInheritance"]);
+            data.setCell(i, 5, metricsData[i].PowerMetrics["LinesOfCode"]);
+        }
+
+        return data;
+    },
+    
+    _convertToFxCopChart: function convertToChart(metricsData) {
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Commits');
+        data.addColumn('number', 'NumberOfIssues');
+        
+        data.addRows(metricsData.length);
+
+        for (var i = 0; i < metricsData.length; i++) {
+            data.setCell(i, 0, this._parseJsonDate(metricsData[i].Date));
+            data.setCell(i, 1, metricsData[i].FxCopMetrics["NumberOfIssues"]);
+        }
+
+        return data;
+    },
+    
+    _convertToStyleCopChart: function convertToChart(metricsData) {
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Commits');
+        data.addColumn('number', 'NumberOfIssues');
+
+        data.addRows(metricsData.length);
+
+        for (var i = 0; i < metricsData.length; i++) {
+            data.setCell(i, 0, this._parseJsonDate(metricsData[i].Date));
+            data.setCell(i, 1, metricsData[i].StyleCopMetrics["NumberOfIssues"]);
         }
 
         return data;

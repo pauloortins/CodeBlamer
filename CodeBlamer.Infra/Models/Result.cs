@@ -231,6 +231,14 @@ namespace CodeBlamer.Infra.Models
     public class FxCopMetrics
     {
         public List<Message> Messages { get; set; }
+        public int NumberOfIssues { 
+            get { return Messages.Count; }
+        }
+
+        public FxCopMetrics()
+        {
+            
+        }
 
         public FxCopMetrics(XElement element)
         {
@@ -273,7 +281,15 @@ namespace CodeBlamer.Infra.Models
 
     public class StyleCopMetrics
     {
-        public List<Violation> Violations { get; set; } 
+        public List<Violation> Violations { get; set; }
+        public int NumberOfIssues
+        {
+            get { return Violations.Count; }
+        }
+
+        public StyleCopMetrics()
+        {
+        }
 
         public StyleCopMetrics(XElement element)
         {
