@@ -50,28 +50,28 @@ namespace CodeBlamer.Web.Controllers
 
             var result = projects.Commits.OrderByDescending(x => x.Date).First().Modules.Select(module => new 
                 {
-                    label = module.Name,
+                    label =HttpUtility.HtmlEncode(module.Name),
                     open = false,
                     inode = true,
-                    node = module.Name,
+                    node = HttpUtility.HtmlEncode(module.Name),
                     branch = module.Namespaces.Select(namespaces => new
                         {
-                            label = namespaces.Name,
+                            label = HttpUtility.HtmlEncode(namespaces.Name),
                             open = false,
                             inode = true,
-                            node = module.Name + ">" + namespaces.Name,
+                            node = HttpUtility.HtmlEncode(module.Name + ">" + namespaces.Name),
                             branch = namespaces.Types.Select(type => new
                                 {
-                                    label = type.Name,
+                                    label = HttpUtility.HtmlEncode(type.Name),
                                     open = false,
                                     inode = true,
-                                    node = module.Name + ">" + namespaces.Name + ">" + type.Name,
+                                    node = HttpUtility.HtmlEncode(module.Name + ">" + namespaces.Name + ">" + type.Name),
                                     branch = type.Members.Select(member => new
                                         {
-                                            label = member.Name,
+                                            label = HttpUtility.HtmlEncode(member.Name),
                                             open = false,
                                             inode = false,
-                                            node = module.Name + ">" + namespaces.Name + ">" + type.Name + ">" + member.Name,
+                                            node = HttpUtility.HtmlEncode(module.Name + ">" + namespaces.Name + ">" + type.Name + ">" + member.Name)
                                         })
                                 })
                         })
@@ -84,7 +84,7 @@ namespace CodeBlamer.Web.Controllers
         public ActionResult GetNodeMetrics(string repositoryUrl, string node)
         {
             var mongo = new MongoRepository();
-            var pieces = node.Split('>');
+            var pieces = HttpUtility.HtmlDecode(node).Split('>');
             var project = mongo.GetProjects().First(x => x.RepositoryUrl == repositoryUrl);
             var commits = project.Commits.OrderBy(x => x.Date);
 
