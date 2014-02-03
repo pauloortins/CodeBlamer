@@ -230,10 +230,45 @@ namespace CodeBlamer.Infra.Models
 
     public class FxCopMetrics
     {
+        public List<Message> Messages { get; set; }
+
         public FxCopMetrics(XElement element)
         {
-            
+            Messages = new List<Message>();
+
+            var messages = element.Element("Messages");
+            if (messages != null)
+            {
+                foreach (var xElement in messages.Elements("Message"))
+                {
+                    var message = new Message();
+                    message.TypeName = xElement.Attribute("TypeName").Value;
+                    message.Category = xElement.Attribute("Category").Value;
+                    message.CheckId = xElement.Attribute("CheckId").Value;
+                    message.FixCategory = xElement.Attribute("FixCategory").Value;
+
+                    var issue = xElement.Element("Issue");
+                    message.Certainty = Int32.Parse(issue.Attribute("Certainty").Value);
+                    message.Level = issue.Attribute("Level").Value;
+                    message.LineNumber = issue.Attribute("Line") != null ? Int32.Parse(issue.Attribute("Line").Value) : 0;
+
+                    Messages.Add(message);
+                }
+            }
         }
+    }
+
+    public class Message
+    {
+        public string TypeName { get; set; }
+        public string Category { get; set; }
+        public string CheckId { get; set; }
+        public string FixCategory { get; set; }
+        public int Certainty { get; set; }
+        public string Level { get; set; }
+        public int LineNumber { get; set; }
+        public string Description { get; set; }
+        
     }
 
     public class StyleCopMetrics
