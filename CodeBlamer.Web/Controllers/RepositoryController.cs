@@ -9,7 +9,6 @@ using CodeBlamer.Infra.Models;
 using CodeBlamer.Web.Models;
 using LibGit2Sharp;
 using CodeBlamer.Infra;
-using Type = CodeBlamer.Infra.Models.Type;
 
 namespace CodeBlamer.Web.Controllers
 {
