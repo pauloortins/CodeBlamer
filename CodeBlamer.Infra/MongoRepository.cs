@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CodeBlamer.Infra.Models;
+using CodeBlamer.Infra.Models.CodeElements;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 
@@ -54,7 +55,7 @@ namespace CodeBlamer.Infra
             collection.Remove(Query.EQ("_id", url.Id));
         }
 
-        public void SaveMetrics(RepositoryUrl repositoryUrl, string commit, List<NewModule> modules)
+        public void SaveMetrics(RepositoryUrl repositoryUrl, string commit, List<Module> modules)
         {
             var projects = GetDatabase().GetCollection<Project>("projects");
 

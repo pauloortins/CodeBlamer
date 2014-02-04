@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CodeBlamer.Infra.Models.CodeElements;
 
 namespace CodeBlamer.Infra.Models
 {
@@ -7,12 +8,12 @@ namespace CodeBlamer.Infra.Models
     {
         public Commits()
         {
-            Modules = new List<NewModule>();
+            Modules = new List<Module>();
         }
 
         public string Author { get; set; }
         public string SHA { get; set; }
         public DateTime Date { get; set; }
-        public List<NewModule> Modules { get; set; }
+        public List<Module> Modules { get; set; }
     }
 }

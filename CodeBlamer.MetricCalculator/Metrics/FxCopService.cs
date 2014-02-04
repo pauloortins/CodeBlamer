@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CodeBlamer.Infra.Models;
+using CodeBlamer.Infra.Models.Metrics;
 
 namespace CodeBlamer.MetricCalculator.Metrics
 {
@@ -14,9 +15,9 @@ namespace CodeBlamer.MetricCalculator.Metrics
         {
         }
 
-        public override MetricsSource GetMetricSource()
+        public override Metric.MetricsSource GetMetricSource()
         {
-            return MetricsSource.FxCop;
+            return Metric.MetricsSource.FxCop;
         }
 
         public override string GenerateResultPath(FileInfo dll)

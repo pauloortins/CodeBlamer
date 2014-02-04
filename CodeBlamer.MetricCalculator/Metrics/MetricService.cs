@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CodeBlamer.Infra.Extensions;
 using CodeBlamer.Infra.Models;
+using CodeBlamer.Infra.Models.Metrics;
 
 namespace CodeBlamer.MetricCalculator.Metrics
 {
@@ -29,7 +30,7 @@ namespace CodeBlamer.MetricCalculator.Metrics
             CommandExtensions.Run(new string[] { cdCommand, metricsCommand });
         }
 
-        public abstract MetricsSource GetMetricSource();
+        public abstract Metric.MetricsSource GetMetricSource();
         public abstract string GenerateResultPath(FileInfo dll);
         public abstract string GenerateMetricsCommand(FileInfo dll);
     }

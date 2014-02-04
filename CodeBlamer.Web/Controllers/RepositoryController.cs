@@ -6,9 +6,12 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using CodeBlamer.Infra.Models;
+using CodeBlamer.Infra.Models.CodeElements;
+using CodeBlamer.Infra.Models.Metrics;
 using CodeBlamer.Web.Models;
 using LibGit2Sharp;
 using CodeBlamer.Infra;
+using Type = CodeBlamer.Infra.Models.CodeElements.Type;
 
 namespace CodeBlamer.Web.Controllers
 {
@@ -132,7 +135,7 @@ namespace CodeBlamer.Web.Controllers
         {
             var date = commit.Date;
             var module = commit.Modules != null ? commit.Modules.FirstOrDefault(x => x.Name == moduleName) : null;
-            NewNamespace namespc = null;
+            Namespace namespc = null;
 
             if (module != null)
             {
@@ -152,8 +155,8 @@ namespace CodeBlamer.Web.Controllers
         {
             var date = commit.Date;
             var module = commit.Modules != null ? commit.Modules.FirstOrDefault(x => x.Name == moduleName) : null;
-            NewNamespace namespc = null;
-            NewType type = null;
+            Namespace namespc = null;
+            Type type = null;
 
             if (module != null)
             {
@@ -178,9 +181,9 @@ namespace CodeBlamer.Web.Controllers
         {
             var date = commit.Date;
             var module = commit.Modules != null ? commit.Modules.FirstOrDefault(x => x.Name == moduleName) : null;
-            NewNamespace namespc = null;
-            NewType type = null;
-            NewMember member = null;
+            Namespace namespc = null;
+            Type type = null;
+            Member member = null;
 
             if (module != null)
             {

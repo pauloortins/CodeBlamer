@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using CodeBlamer.Infra;
 using CodeBlamer.Infra.Extensions;
 using CodeBlamer.Infra.Models;
+using CodeBlamer.Infra.Models.CodeElements;
 using CodeBlamer.MetricCalculator.Metrics;
 
 namespace CodeBlamer.MetricCalculator
@@ -126,7 +127,7 @@ namespace CodeBlamer.MetricCalculator
             mongo.SaveMetrics(_repositoryUrl, _commit, modules);
         }
         
-        private NewModule GetMetricsForDll(FileInfo fileInfo)
+        private Module GetMetricsForDll(FileInfo fileInfo)
         {
             var result = new MetricResults();
 
