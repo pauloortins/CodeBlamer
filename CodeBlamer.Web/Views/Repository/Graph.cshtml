@@ -27,7 +27,7 @@
     <script type="text/javascript">
 
         var w = 1280,
-            h = 800,
+            h = 700,
             node,
             text,
             link,
@@ -35,7 +35,7 @@
 
         var force = d3.layout.force()
             .on("tick", tick)
-            .charge(function(d) { return d._children ? -d.size / 200 : -60; })
+            .charge(function(d) { return d.children ? -d.size / 200 : -200; })
             .linkStrength(1)
             .linkDistance(function(d) { return d.target._children ? 160 : 60; })
             .size([w, h - 160]);
@@ -106,7 +106,7 @@
                 .append("svg:text")
                 .attr("x", function(d) { return d.x; })
                 .attr("y", function(d) { return d.y; })
-                .text(function(d) { return "ola"; })
+                .text(function(d) { return d.name; })
                 .call(force.drag);
 
             // Exit any old nodes.
@@ -135,9 +135,19 @@
         // Toggle children on click.
 
         function click(d) {
+            function hideRecursive(node) {
+                if (node.children) {
+                    node._children = node.children;
+                    node.children = null;
+
+                    $.each(node._children, function (i, e) {
+                        hideRecursive(e);
+                    });
+                }
+            }
+
             if (d.children) {
-                d._children = d.children;
-                d.children = null;
+                hideRecursive(d);
             } else {
                 d.children = d._children;
                 d._children = null;
