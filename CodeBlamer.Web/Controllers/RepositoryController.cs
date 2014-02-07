@@ -48,9 +48,9 @@ namespace CodeBlamer.Web.Controllers
         [HttpGet]
         public ActionResult GetProjectTree(string repositoryUrl)
         {
-            var projects = new MongoRepository().GetProjects().First(x => x.RepositoryUrl == repositoryUrl);
+            var commits = new MongoRepository().GetCommits().Where(x => x.RepositoryUrl == repositoryUrl);
 
-            var result = projects.Commits.OrderByDescending(x => x.Date).First().Modules.OrderBy(x => x.Name).Select(module => new 
+            var result = commits.OrderByDescending(x => x.Date).First().Modules.OrderBy(x => x.Name).Select(module => new 
                 {
                     label =HttpUtility.HtmlEncode(module.Name),
                     open = false,
@@ -87,8 +87,7 @@ namespace CodeBlamer.Web.Controllers
         {
             var mongo = new MongoRepository();
             var pieces = HttpUtility.HtmlDecode(node).Split('>');
-            var project = mongo.GetProjects().First(x => x.RepositoryUrl == repositoryUrl);
-            var commits = project.Commits.OrderBy(x => x.Date);
+            var commits = mongo.GetCommits().Where(x => x.RepositoryUrl == repositoryUrl).OrderBy(x => x.Date);
 
             if (pieces.Length == 1)
             {

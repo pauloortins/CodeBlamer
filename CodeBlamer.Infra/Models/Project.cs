@@ -9,6 +9,5 @@ namespace CodeBlamer.Infra.Models
         public string RepositoryAuthor { get; set; }
         public string RepositoryName { get; set; }
         public string RepositoryUrl { get; set; }
-        public List<Commits> Commits { get; set; }
     }
 }

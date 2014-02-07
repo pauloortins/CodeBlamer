@@ -2,6 +2,7 @@
 using System.Linq;
 using CodeBlamer.Infra.Models;
 using CodeBlamer.Infra.Models.CodeElements;
+using LibGit2Sharp;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 
@@ -18,13 +19,23 @@ namespace CodeBlamer.Infra
             var database = server.GetDatabase("codeblamerdb");
             return database;
         }
-        
-        public void InsertProject(Project project)
+
+        public void InsertProject(Project project, List<Commits> commits)
         {
             var database = GetDatabase();
-            var collection = database.GetCollection<Project>("projects");
+            var projects = database.GetCollection<Project>("projects");
 
-            collection.Insert(project);
+            projects.Insert(project);
+
+            var colCommits = database.GetCollection<Commits>("commits");
+            colCommits.InsertBatch(commits);
+        }
+
+        public List<Commits> GetCommits()
+        {
+            var database = GetDatabase();
+            var collection = database.GetCollection<Commits>("commits");
+            return collection.FindAllAs<Commits>().ToList();
         }
 
         public List<Project> GetProjects()
@@ -55,15 +66,14 @@ namespace CodeBlamer.Infra
             collection.Remove(Query.EQ("_id", url.Id));
         }
 
-        public void SaveMetrics(RepositoryUrl repositoryUrl, string commit, List<Module> modules)
+        public void SaveMetrics(RepositoryUrl repositoryUrl, string commitSHA, List<Module> modules)
         {
-            var projects = GetDatabase().GetCollection<Project>("projects");
+            var colCommits = GetDatabase().GetCollection<Commits>("commits");
 
-            var project = projects.FindOne(Query.EQ("RepositoryUrl", repositoryUrl.Url));
-            var commitProject = project.Commits.First(x => x.SHA == commit);
-            commitProject.Modules = modules;
+            var commit = colCommits.FindOne(Query.EQ("SHA", commitSHA));
+            commit.Modules = modules;
 
-            projects.Save(project);
+            colCommits.Save(commit);
         }
     }
 }

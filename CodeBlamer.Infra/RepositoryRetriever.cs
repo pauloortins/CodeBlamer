@@ -49,10 +49,9 @@ namespace CodeBlamer.Infra
                     RepositoryName = GetRepositoryName(repositoryUrl)
                 };
 
-            project.Commits =
-                commits.Take(100).Select(x => new Commits {Author = x.Author.Name, Date = x.Author.When.UtcDateTime, SHA = x.Sha}).ToList();
+            var colCommits = commits.Take(1).Select(x => new Commits { Author = x.Author.Name, Date = x.Author.When.UtcDateTime, SHA = x.Sha, RepositoryUrl = repositoryUrl}).ToList();
 
-            new MongoRepository().InsertProject(project);
+            new MongoRepository().InsertProject(project, colCommits);
         }
 
         public void GenerateSpecificVersion(RepositoryUrl repositoryUrl, string commit)

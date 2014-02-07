@@ -32,11 +32,11 @@ namespace CodeBlamer.MetricCalculator
 
                 WriteToConsole(string.Format("{0} found", repositoryUrl.Url));
 
-                //WriteToConsole("Cloning Repository");
-                //repository.AddRepository(repositoryUrl);
+                WriteToConsole("Cloning Repository");
+                repository.AddRepository(repositoryUrl);
 
-                //WriteToConsole("Generating Versions");
-                //GenerateAllVersions(repositoryUrl);
+                WriteToConsole("Generating Versions");
+                GenerateAllVersions(repositoryUrl);
 
                 WriteToConsole("Calculating Metrics");
                 CalculateMetrics(repositoryUrl);
@@ -51,15 +51,15 @@ namespace CodeBlamer.MetricCalculator
         private static void CalculateMetrics(RepositoryUrl repositoryUrl)
         {
             var mongo = new MongoRepository();
-            var projects = mongo.GetProjects().First(x => x.RepositoryUrl.Equals(repositoryUrl.Url));
+            var commits = mongo.GetCommits().Where(x => x.RepositoryUrl.Equals(repositoryUrl.Url)).ToList();
 
-            projects.Commits.ForEach(x =>
+            commits.ForEach(x =>
                 {
                     //try
                     //{
                         var solution = new Solution(repositoryUrl, x.SHA);
-                        //solution.Build();
-                        //solution.CalculateMetrics();
+                        solution.Build();
+                        solution.CalculateMetrics();
                         solution.SaveMetrics();
                         WriteToConsole(x.SHA + "- OK");
                     //}
@@ -79,9 +79,9 @@ namespace CodeBlamer.MetricCalculator
         private static void GenerateAllVersions(RepositoryUrl repositoryUrl)
         {
             var mongo = new MongoRepository();
-            var projects = mongo.GetProjects().First(x => x.RepositoryUrl.Equals(repositoryUrl.Url));
+            var commits = mongo.GetCommits().Where(x => x.RepositoryUrl.Equals(repositoryUrl.Url));
 
-            projects.Commits.ToList().ForEach(x => GenerateVersion(repositoryUrl, x.SHA));
+            commits.ToList().ForEach(x => GenerateVersion(repositoryUrl, x.SHA));
         }
 
         private static void GenerateVersion(RepositoryUrl repositoryUrl, string commit)
