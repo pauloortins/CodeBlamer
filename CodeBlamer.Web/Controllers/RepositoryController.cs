@@ -82,6 +82,11 @@ namespace CodeBlamer.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult Graph(string repositoryUrl)
+        {
+            return View();
+        }
+
         [HttpGet]
         public ActionResult GetNodeMetrics(string repositoryUrl, string node)
         {

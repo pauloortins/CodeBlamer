@@ -36,6 +36,12 @@ namespace CodeBlamer.Web
                 .IncludeDirectory("~/Scripts/app/view", "*.js")
                 );
 
+            bundles.Add(new ScriptBundle("~/bundles/d3js")
+                .Include("~/Scripts/lib/d3js/d3.js")
+                .Include("~/Scripts/lib/d3js/d3.geom.js")
+                .Include("~/Scripts/lib/d3js/d3.layout.js")
+                );
+
             bundles.Add(new StyleBundle("~/css/aciTree")
                     .IncludeDirectory("~/Content/css/lib/aciTree","*.css")
                 );

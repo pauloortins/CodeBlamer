@@ -155,7 +155,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Scripts\lib\d3js\flare.json" />
     <None Include="Scripts\lib\jquery\jquery-2.0.3.intellisense.js" />
+    <Content Include="Scripts\lib\d3js\d3.geom.js" />
+    <Content Include="Scripts\lib\d3js\d3.js" />
+    <Content Include="Scripts\lib\d3js\d3.layout.js" />
     <Content Include="Scripts\lib\dataTables\dataTables.bootstrap.js" />
     <Content Include="Scripts\lib\dataTables\jquery.dataTables.js" />
     <Content Include="Scripts\lib\jquery\jquery-2.0.3.js" />
@@ -174,6 +178,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Repository\Detail.cshtml" />
+    <Content Include="Views\Repository\Graph.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
