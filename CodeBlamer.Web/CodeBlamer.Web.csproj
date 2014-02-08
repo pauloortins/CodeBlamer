@@ -148,6 +148,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\app\view\RepoDetailView.js" />
     <Content Include="Scripts\app\util\class.js" />
+    <Content Include="Scripts\app\view\RepoForceView.js" />
     <Content Include="Scripts\app\view\RepoListView.js" />
     <Content Include="Scripts\lib\bootstrap\bootstrap.js" />
     <Content Include="Scripts\lib\bootstrap\bootstrap.min.js" />
@@ -179,6 +180,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Repository\Detail.cshtml" />
     <Content Include="Views\Repository\Graph.cshtml" />
+    <Content Include="Views\Repository\Graph2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

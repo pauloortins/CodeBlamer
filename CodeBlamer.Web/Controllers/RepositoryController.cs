@@ -81,10 +81,71 @@ namespace CodeBlamer.Web.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
+        
+        [HttpGet]
         public ActionResult Graph(string repositoryUrl)
         {
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult Graph2(string repositoryUrl)
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GraphJson(string repositoryUrl)
+        {
+
+            var commit = new MongoRepository().GetCommits().Where(x => x.RepositoryUrl == "https://github.com/JeremySkinner/FluentValidation.git").OrderByDescending(x => x.Date).First();
+
+            var data = new
+                {
+                    name = "FluentValidation",
+                    children = commit.Modules.Select(module => new
+                        {
+                            name = module.Name,
+                            children = module.Namespaces.Select(namespaceEl => new
+                                {
+                                    name = "",
+                                    children = namespaceEl.Types.Select(type => new
+                                        {
+                                            name = "",
+                                            size = type.PowerMetrics == null || type.PowerMetrics.LinesOfCode == 0 ? 1 : type.PowerMetrics.LinesOfCode
+                                        })
+                                })
+                        })
+                };
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult GraphJson2(string repositoryUrl)
+        {
+
+            var commit = new MongoRepository().GetCommits().Where(x => x.RepositoryUrl == "https://github.com/JeremySkinner/FluentValidation.git").OrderByDescending(x => x.Date).First();
+
+            var data = new
+            {
+                name = "FluentValidation",
+                _children = commit.Modules.Select(module => new
+                {
+                    name = module.Name,
+                    _children = module.Namespaces.Select(namespaceEl => new
+                    {
+                        name = "",
+                        _children = namespaceEl.Types.Select(type => new
+                        {
+                            name = "",
+                            size = type.PowerMetrics == null || type.PowerMetrics.LinesOfCode == 0 ? 1 : type.PowerMetrics.LinesOfCode
+                        })
+                    })
+                })
+            };
+
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
