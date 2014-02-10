@@ -181,6 +181,7 @@
     <Content Include="Views\Repository\Detail.cshtml" />
     <Content Include="Views\Repository\Graph.cshtml" />
     <Content Include="Views\Repository\Graph2.cshtml" />
+    <Content Include="Views\Repository\Graph3.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -95,6 +95,12 @@ namespace CodeBlamer.Web.Controllers
         }
 
         [HttpGet]
+        public ActionResult Graph3(string repositoryUrl)
+        {
+            return View();
+        }
+
+        [HttpGet]
         public ActionResult GraphJson(string repositoryUrl)
         {
 
@@ -140,6 +146,33 @@ namespace CodeBlamer.Web.Controllers
                         {
                             name = "",
                             size = type.PowerMetrics == null || type.PowerMetrics.LinesOfCode == 0 ? 1 : type.PowerMetrics.LinesOfCode
+                        })
+                    })
+                })
+            };
+
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult GraphJson3(string repositoryUrl)
+        {
+
+            var commit = new MongoRepository().GetCommits().Where(x => x.RepositoryUrl == "https://github.com/JeremySkinner/FluentValidation.git").OrderByDescending(x => x.Date).First();
+
+            var data = new
+            {
+                name = "FluentValidation",
+                children = commit.Modules.Select(module => new
+                {
+                    name = module.Name,
+                    children = module.Namespaces.Select(namespaceEl => new
+                    {
+                        name = namespaceEl.Name,
+                        children = namespaceEl.Types.Select(type => new
+                        {
+                            name = type.Name,
+                            value = type.PowerMetrics == null || type.PowerMetrics.LinesOfCode == 0 ? 1 : type.PowerMetrics.LinesOfCode
                         })
                     })
                 })
