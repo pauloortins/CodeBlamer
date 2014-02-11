@@ -121,7 +121,7 @@ namespace CodeBlamer.Web.Controllers
                                         {
                                             name = type.Name,
                                             maintainabilityIndex = type.PowerMetrics == null ? 0 : type.PowerMetrics.MaintainabilityIndex,
-                                            size = type.PowerMetrics == null || type.PowerMetrics.LinesOfCode == 0 ? 1 : type.PowerMetrics.LinesOfCode
+                                            value = type.PowerMetrics == null || type.PowerMetrics.LinesOfCode == 0 ? 1 : type.PowerMetrics.LinesOfCode
                                         })
                                 })
                         })
@@ -149,36 +149,6 @@ namespace CodeBlamer.Web.Controllers
                         {
                             name = "",
                             size = type.PowerMetrics == null || type.PowerMetrics.LinesOfCode == 0 ? 1 : type.PowerMetrics.LinesOfCode
-                        })
-                    })
-                })
-            };
-
-            return Json(data, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public ActionResult GraphJson3(string repositoryUrl)
-        {
-
-            var commit = new MongoRepository().GetCommits().Where(x => x.RepositoryUrl == "https://github.com/JeremySkinner/FluentValidation.git").OrderByDescending(x => x.Date).First();
-
-            var data = new
-            {
-                name = "FluentValidation",
-                children = commit.Modules.Select(module => new
-                {
-                    name = module.Name,
-                    maintainabilityIndex = module.PowerMetrics.MaintainabilityIndex,
-                    children = module.Namespaces.Select(namespaceEl => new
-                    {
-                        name = namespaceEl.Name,
-                        maintainabilityIndex = namespaceEl.PowerMetrics.MaintainabilityIndex,
-                        children = namespaceEl.Types.Select(type => new
-                        {
-                            name = type.Name,
-                            maintainabilityIndex = type.PowerMetrics == null ? 0 : type.PowerMetrics.MaintainabilityIndex,
-                            value = type.PowerMetrics == null || type.PowerMetrics.LinesOfCode == 0 ? 1 : type.PowerMetrics.LinesOfCode
                         })
                     })
                 })
