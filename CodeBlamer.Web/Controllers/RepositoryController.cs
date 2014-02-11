@@ -112,12 +112,15 @@ namespace CodeBlamer.Web.Controllers
                     children = commit.Modules.Select(module => new
                         {
                             name = module.Name,
+                            maintainabilityIndex = module.PowerMetrics.MaintainabilityIndex,
                             children = module.Namespaces.Select(namespaceEl => new
                                 {
                                     name = "",
+                                    maintainabilityIndex = namespaceEl.PowerMetrics.MaintainabilityIndex,
                                     children = namespaceEl.Types.Select(type => new
                                         {
                                             name = "",
+                                            maintainabilityIndex = type.PowerMetrics == null ? 0 : type.PowerMetrics.MaintainabilityIndex,
                                             size = type.PowerMetrics == null || type.PowerMetrics.LinesOfCode == 0 ? 1 : type.PowerMetrics.LinesOfCode
                                         })
                                 })
@@ -135,10 +138,10 @@ namespace CodeBlamer.Web.Controllers
 
             var data = new
             {
-                name = "FluentValidation",
+                name = "FluentValidation",                
                 _children = commit.Modules.Select(module => new
                 {
-                    name = module.Name,
+                    name = module.Name,                    
                     _children = module.Namespaces.Select(namespaceEl => new
                     {
                         name = "",

@@ -24,8 +24,8 @@
 
         circle.parent {
             fill: #1f77b4;
-            fill-opacity: .1;
-            stroke: steelblue;
+            fill-opacity: .5;
+            /*stroke: steelblue;*/
         }
 
             circle.parent:hover {
@@ -71,7 +71,8 @@
                 .attr("class", function(d) { return d.children ? "parent" : "child"; })
                 .attr("cx", function(d) { return d.x; })
                 .attr("cy", function(d) { return d.y; })
-                .attr("r", function(d) { return d.r; })
+                .attr("r", function (d) { return d.r; })
+                .style("fill", color)
                 .on("click", function(d) { return zoom(node == d ? root : d); });
 
             vis.selectAll("text")
@@ -109,5 +110,31 @@
             node = d;
             d3.event.stopPropagation();
         }
+        
+      function color(d) {
+          var colors = [
+              "#ff0000",
+              "#ea1500",
+              "#d42b00",
+              "#bf4000",
+              "#aa5500",
+              "#956a00",
+              "#808000",
+              "#6a9500",
+              "#55aa00",
+              "#40bf00",
+              "#2bd400",
+              "#15ea00",
+              "#00ff00"
+          ];
+
+          var maintainabilityIndex = d.maintainabilityIndex;
+
+          if (maintainabilityIndex == 0)
+              return "#fff";
+
+          var colorRange = Math.ceil(maintainabilityIndex / 8);
+          return colors[colorRange];
+      }
     </script>
 }
