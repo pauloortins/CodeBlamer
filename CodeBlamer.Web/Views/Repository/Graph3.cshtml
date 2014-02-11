@@ -24,7 +24,7 @@ text {
 
 rect {
   fill: none;
-  stroke: #fff;
+  stroke: #000;
 }
 
 rect.parent,
@@ -47,7 +47,7 @@ rect.parent,
 
 .children rect.parent {
   fill: #bbb;
-  fill-opacity: .5;
+  fill-opacity: 0;
 }
 
 .children:hover rect.child {
@@ -231,6 +231,7 @@ rect.parent,
             function rect(rect) {
                 rect.attr("x", function (d) { return x(d.x); })
                     .attr("y", function (d) { return y(d.y); })
+                    .style("fill", color)
                     .attr("width", function (d) { return x(d.x + d.dx) - x(d.x); })
                     .attr("height", function (d) { return y(d.y + d.dy) - y(d.y); });
             }
@@ -239,6 +240,32 @@ rect.parent,
                 return d.parent
                     ? name(d.parent) + "." + d.name
                     : d.name;
+            }
+            
+            function color(d) {
+                var colors = [
+                    "#ff0000",
+                    "#ea1500",
+                    "#d42b00",
+                    "#bf4000",
+                    "#aa5500",
+                    "#956a00",
+                    "#808000",
+                    "#6a9500",
+                    "#55aa00",
+                    "#40bf00",
+                    "#2bd400",
+                    "#15ea00",
+                    "#00ff00"
+                ];
+
+                var maintainabilityIndex = d.maintainabilityIndex;
+
+                if (maintainabilityIndex == 0)
+                    return "#fff";
+
+                var colorRange = Math.floor(maintainabilityIndex / 8);
+                return colors[colorRange];
             }
         });
 

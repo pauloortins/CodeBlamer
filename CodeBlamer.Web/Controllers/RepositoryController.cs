@@ -169,12 +169,15 @@ namespace CodeBlamer.Web.Controllers
                 children = commit.Modules.Select(module => new
                 {
                     name = module.Name,
+                    maintainabilityIndex = module.PowerMetrics.MaintainabilityIndex,
                     children = module.Namespaces.Select(namespaceEl => new
                     {
                         name = namespaceEl.Name,
+                        maintainabilityIndex = namespaceEl.PowerMetrics.MaintainabilityIndex,
                         children = namespaceEl.Types.Select(type => new
                         {
                             name = type.Name,
+                            maintainabilityIndex = type.PowerMetrics == null ? 0 : type.PowerMetrics.MaintainabilityIndex,
                             value = type.PowerMetrics == null || type.PowerMetrics.LinesOfCode == 0 ? 1 : type.PowerMetrics.LinesOfCode
                         })
                     })
