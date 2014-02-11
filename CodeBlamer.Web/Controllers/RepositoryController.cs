@@ -115,11 +115,11 @@ namespace CodeBlamer.Web.Controllers
                             maintainabilityIndex = module.PowerMetrics.MaintainabilityIndex,
                             children = module.Namespaces.Select(namespaceEl => new
                                 {
-                                    name = "",
+                                    name = namespaceEl.Name,
                                     maintainabilityIndex = namespaceEl.PowerMetrics.MaintainabilityIndex,
                                     children = namespaceEl.Types.Select(type => new
                                         {
-                                            name = "",
+                                            name = type.Name,
                                             maintainabilityIndex = type.PowerMetrics == null ? 0 : type.PowerMetrics.MaintainabilityIndex,
                                             size = type.PowerMetrics == null || type.PowerMetrics.LinesOfCode == 0 ? 1 : type.PowerMetrics.LinesOfCode
                                         })

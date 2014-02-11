@@ -71,8 +71,9 @@
                 .attr("class", function(d) { return d.children ? "parent" : "child"; })
                 .attr("cx", function(d) { return d.x; })
                 .attr("cy", function(d) { return d.y; })
-                .attr("r", function (d) { return d.r; })
+                .attr("r", function(d) { return d.r; })
                 .style("fill", color)
+                .attr("title", function (d) { return d.name; })
                 .on("click", function(d) { return zoom(node == d ? root : d); });
 
             vis.selectAll("text")
@@ -85,6 +86,7 @@
                 .attr("text-anchor", "middle")
                 .style("opacity", function(d) { return d.r > 20 ? 1 : 0; })
                 .text(function(d) { return d.name; });
+
 
             d3.select(window).on("click", function() { zoom(root); });
         });
@@ -110,31 +112,31 @@
             node = d;
             d3.event.stopPropagation();
         }
-        
-      function color(d) {
-          var colors = [
-              "#ff0000",
-              "#ea1500",
-              "#d42b00",
-              "#bf4000",
-              "#aa5500",
-              "#956a00",
-              "#808000",
-              "#6a9500",
-              "#55aa00",
-              "#40bf00",
-              "#2bd400",
-              "#15ea00",
-              "#00ff00"
-          ];
 
-          var maintainabilityIndex = d.maintainabilityIndex;
+        function color(d) {
+            var colors = [
+                "#ff0000",
+                "#ea1500",
+                "#d42b00",
+                "#bf4000",
+                "#aa5500",
+                "#956a00",
+                "#808000",
+                "#6a9500",
+                "#55aa00",
+                "#40bf00",
+                "#2bd400",
+                "#15ea00",
+                "#00ff00"
+            ];
 
-          if (maintainabilityIndex == 0)
-              return "#fff";
+            var maintainabilityIndex = d.maintainabilityIndex;
 
-          var colorRange = Math.ceil(maintainabilityIndex / 8);
-          return colors[colorRange];
-      }
+            if (maintainabilityIndex == 0)
+                return "#fff";
+
+            var colorRange = Math.floor(maintainabilityIndex / 8);
+            return colors[colorRange];
+        }
     </script>
 }
