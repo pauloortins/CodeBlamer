@@ -34,7 +34,7 @@
             }
 
         circle.child {
-            pointer-events: none;
+            /*pointer-events: none;*/
         }
 </style>
 
@@ -73,8 +73,12 @@
                 .attr("cy", function(d) { return d.y; })
                 .attr("r", function(d) { return d.r; })
                 .style("fill", color)
-                .attr("title", function (d) { return d.name; })
+                //.attr("title", function (d) { return d.name; })
                 .on("click", function(d) { return zoom(node == d ? root : d); });
+
+            vis.selectAll("circle")
+                .data(nodes)
+                .append("svg:title").text(function (d) { return d.name; });
 
             vis.selectAll("text")
                 .data(nodes)
