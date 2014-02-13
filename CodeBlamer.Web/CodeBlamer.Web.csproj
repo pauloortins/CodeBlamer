@@ -150,6 +150,7 @@
     <Content Include="Scripts\app\util\class.js" />
     <Content Include="Scripts\app\view\RepoForceView.js" />
     <Content Include="Scripts\app\view\RepoListView.js" />
+    <Content Include="Scripts\app\view\RepoPackView.js" />
     <Content Include="Scripts\lib\bootstrap\bootstrap.js" />
     <Content Include="Scripts\lib\bootstrap\bootstrap.min.js" />
     <Content Include="Scripts\lib\aciTree\sample.json" />
