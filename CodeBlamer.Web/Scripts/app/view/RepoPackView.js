@@ -60,22 +60,24 @@
         });
     },
     
-    _zoom: function(d, i) {
+    _zoom: function (d, i) {
+        var self = this;
+
         var k = self.ratio / d.r / 2;
-        x.domain([d.x - d.r, d.x + d.r]);
-        y.domain([d.y - d.r, d.y + d.r]);
+        self.posX.domain([d.x - d.r, d.x + d.r]);
+        self.posY.domain([d.y - d.r, d.y + d.r]);
 
         var t = self.vis.transition()
             .duration(d3.event.altKey ? 7500 : 750);
 
         t.selectAll("circle")
-            .attr("cx", function(d) { return x(d.x); })
-            .attr("cy", function(d) { return y(d.y); })
+            .attr("cx", function (d) { return self.posX(d.x); })
+            .attr("cy", function (d) { return self.posY(d.y); })
             .attr("r", function(d) { return k * d.r; });
 
         t.selectAll("text")
-            .attr("x", function(d) { return x(d.x); })
-            .attr("y", function(d) { return y(d.y); })
+            .attr("x", function (d) { return self.posX(d.x); })
+            .attr("y", function (d) { return self.posY(d.y); })
             .style("opacity", function(d) { return k * d.r > 20 ? 1 : 0; });
 
         self.node = d;

@@ -25,7 +25,7 @@ namespace CodeBlamer.Infra
         {
             var pathResolver = new PathResolver(repositoryUrl.Url);
             var repository = new Repository(pathResolver.GetRepositoryPath());
-            return repository.Commits.OrderByDescending(x => x.Author.When.UtcDateTime).Take(1).AsQueryable();
+            return repository.Commits.OrderByDescending(x => x.Author.When.UtcDateTime).AsQueryable();
         }
 
         private string GetRepositoryAuthor(string repositoryUrl)
@@ -49,7 +49,7 @@ namespace CodeBlamer.Infra
                     RepositoryName = GetRepositoryName(repositoryUrl)
                 };
 
-            var colCommits = commits.Take(1).Select(x => new Commits { Author = x.Author.Name, Date = x.Author.When.UtcDateTime, SHA = x.Sha, RepositoryUrl = repositoryUrl}).ToList();
+            var colCommits = commits.Select(x => new Commits { Author = x.Author.Name, Date = x.Author.When.UtcDateTime, SHA = x.Sha, RepositoryUrl = repositoryUrl}).ToList();
 
             new MongoRepository().InsertProject(project, colCommits);
         }

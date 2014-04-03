@@ -21,3 +21,17 @@ C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.MetricCalculator\bin\D
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.MetricCalculator\obj\Debug\CodeBlamer.MetricCalculator.csprojResolveAssemblyReference.cache
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.MetricCalculator\obj\Debug\CodeBlamer.MetricCalculator.exe
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.MetricCalculator\obj\Debug\CodeBlamer.MetricCalculator.pdb
+C:\dev\Projetos\CodeBlamer\CodeBlamer.MetricCalculator\bin\Debug\CodeBlamer.MetricCalculator.exe
+C:\dev\Projetos\CodeBlamer\CodeBlamer.MetricCalculator\bin\Debug\CodeBlamer.Infra.dll
+C:\dev\Projetos\CodeBlamer\CodeBlamer.MetricCalculator\bin\Debug\MongoDB.Bson.dll
+C:\dev\Projetos\CodeBlamer\CodeBlamer.MetricCalculator\bin\Debug\MongoDB.Driver.dll
+C:\dev\Projetos\CodeBlamer\CodeBlamer.MetricCalculator\bin\Debug\CodeBlamer.MetricCalculator.exe.config
+C:\dev\Projetos\CodeBlamer\CodeBlamer.MetricCalculator\bin\Debug\CodeBlamer.MetricCalculator.pdb
+C:\dev\Projetos\CodeBlamer\CodeBlamer.MetricCalculator\bin\Debug\LibGit2Sharp.dll
+C:\dev\Projetos\CodeBlamer\CodeBlamer.MetricCalculator\bin\Debug\CodeBlamer.Infra.pdb
+C:\dev\Projetos\CodeBlamer\CodeBlamer.MetricCalculator\bin\Debug\LibGit2Sharp.xml
+C:\dev\Projetos\CodeBlamer\CodeBlamer.MetricCalculator\bin\Debug\MongoDB.Bson.xml
+C:\dev\Projetos\CodeBlamer\CodeBlamer.MetricCalculator\bin\Debug\MongoDB.Driver.xml
+C:\dev\Projetos\CodeBlamer\CodeBlamer.MetricCalculator\obj\Debug\CodeBlamer.MetricCalculator.csprojResolveAssemblyReference.cache
+C:\dev\Projetos\CodeBlamer\CodeBlamer.MetricCalculator\obj\Debug\CodeBlamer.MetricCalculator.exe
+C:\dev\Projetos\CodeBlamer\CodeBlamer.MetricCalculator\obj\Debug\CodeBlamer.MetricCalculator.pdb

@@ -20,3 +20,14 @@ C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.Infra\bin\Debug\MongoD
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.Infra\obj\Debug\CodeBlamer.Infra.csprojResolveAssemblyReference.cache
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.Infra\obj\Debug\CodeBlamer.Infra.dll
 C:\Users\paulo_000\Documents\GitHub\CodeBlamer\CodeBlamer.Infra\obj\Debug\CodeBlamer.Infra.pdb
+C:\dev\Projetos\CodeBlamer\CodeBlamer.Infra\bin\Debug\CodeBlamer.Infra.dll
+C:\dev\Projetos\CodeBlamer\CodeBlamer.Infra\bin\Debug\CodeBlamer.Infra.pdb
+C:\dev\Projetos\CodeBlamer\CodeBlamer.Infra\bin\Debug\LibGit2Sharp.dll
+C:\dev\Projetos\CodeBlamer\CodeBlamer.Infra\bin\Debug\MongoDB.Bson.dll
+C:\dev\Projetos\CodeBlamer\CodeBlamer.Infra\bin\Debug\MongoDB.Driver.dll
+C:\dev\Projetos\CodeBlamer\CodeBlamer.Infra\bin\Debug\LibGit2Sharp.xml
+C:\dev\Projetos\CodeBlamer\CodeBlamer.Infra\bin\Debug\MongoDB.Bson.xml
+C:\dev\Projetos\CodeBlamer\CodeBlamer.Infra\bin\Debug\MongoDB.Driver.xml
+C:\dev\Projetos\CodeBlamer\CodeBlamer.Infra\obj\Debug\CodeBlamer.Infra.csprojResolveAssemblyReference.cache
+C:\dev\Projetos\CodeBlamer\CodeBlamer.Infra\obj\Debug\CodeBlamer.Infra.dll
+C:\dev\Projetos\CodeBlamer\CodeBlamer.Infra\obj\Debug\CodeBlamer.Infra.pdb

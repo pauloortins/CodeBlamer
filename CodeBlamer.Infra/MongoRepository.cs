@@ -10,7 +10,7 @@ namespace CodeBlamer.Infra
 {
     public class MongoRepository
     {
-        private const string _connectionString = "mongodb://localhost";
+        private const string _connectionString = "mongodb://192.168.10.1:27017";
         
         private MongoDatabase GetDatabase()
         {

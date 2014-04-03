@@ -20,7 +20,7 @@ namespace CodeBlamer.Infra.Models
 
         public string GetRepositoryPath()
         {
-            return "E:/CodeBlamer/Repositories/" + _url.Replace("https://github.com/", string.Empty);
+            return "C:/CodeBlamer/Repositories/" + _url.Replace("https://github.com/", string.Empty);
         }
 
         public string GetVersionPath()

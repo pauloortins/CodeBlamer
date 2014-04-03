@@ -31,9 +31,7 @@ namespace CodeBlamer.MetricCalculator
 
             _metricServices = new List<MetricService>()
                 {
-                    new PowerMetricsService(_pathResolver),
-                    new FxCopService(_pathResolver),
-                    new StyleCopService(_pathResolver)
+                    new PowerMetricsService(_pathResolver)                    
                 };
 
             var solutionFiles = GetVersionPath().SearchFor("*.sln");
@@ -79,10 +77,10 @@ namespace CodeBlamer.MetricCalculator
         public void Build()
         {
             //strCommandParameters are parameters to pass to program
-            var parameters = "\"{0}\" /t:build /m:4 /nr:true /nologo /p:CustomAfterMicrosoftCommonTargets=E:\\CodeBlamer\\filter.targets";
+            var parameters = "\"{0}\" /t:build /m:4 /nr:true /nologo /p:CustomAfterMicrosoftCommonTargets=C:\\CodeBlamer\\filter.targets";
             var path = GetVersionPath();
 
-            var cdCommand = string.Format("E: && cd {0}", path);
+            var cdCommand = string.Format("C: && cd {0}", path);
             var buildCommand = "C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\MSBuild.exe " + string.Format(parameters, GetSolutionName());
 
             CommandExtensions.Run(new string[] {cdCommand, buildCommand});
